@@ -1,0 +1,49 @@
+To Do Ibrahim and Abhirath:
+
+1) Data Path design on paper.
+6) Processor Class  ===> should be able to do small computational block stuff
+
+                              2) Reg file Class making. and Testing
+                              3) Multiplexer class making: 
+                                                            a) attributes: .size (eg 4: 1),  .Controller_class_object.atter
+                                                            b) methods: .connectData(lineNumber, data)
+                                                                        .getData()
+4) Controller class ===> Enum
+7) ALU Control Class     ===> Enum
+5) ALU Class            ===> command mapping
+
+
+
+To Do Gathik:
+
+1) Instruction memory ( along with PC incrimenting and IF part of processor ??????? )
+2) Data Memory ( break into 4 parts ????? )
+3) GUI ????????
+4) ?????????????
+
+----------------------------Processor-----------------------------------
+
+class Processor():
+  def __init__(self):
+    self.mux1 = Mux (2, Controller.ab)
+  
+  
+  def run():
+    while(self.status != EXIT):
+      self.mux1.connectData(0, self.PC.readReg(20:16))
+      self.mux1.connectData(1, self.PC.readReg(15:11))
+    
+      self.ALU.port(0, self.registerFile.read(self.PC.readReg(26:21)))
+      self.ALU.port(1, self.registerFile.read(mux1.getData()))
+    
+      self.status = self.ALU.run()  ###### status is CONTINUE unless syscall says exit.
+
+
+
+
+
+
+
+And = COMB(inp_size, myfunc)
+And.input(1) <= OR.output()
+OR.output() > And.input(1)
