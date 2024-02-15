@@ -117,7 +117,7 @@ rand:	#random number generator using time
 	#Moving the return value to $v0
 	move $v0, $a0
 	
-	#Popping the stack and using to return address to jump back.
+	#Popping the stack and using the return address to jump back.
 	lw $ra, ($sp)
 	addi $sp, $sp, 4
 	jr $ra
@@ -134,7 +134,7 @@ swap:	#for swapping two elements in an array.
 	sw $t7, 0($a1)
 	sw $t8, 0($a0)
 	
-	#Popping the stack and using to return address to jump back.
+	#Popping the stack and using the return address to jump back.
 	lw $ra, ($sp)
 	addi $sp, $sp, 4
 	jr $ra
@@ -217,7 +217,7 @@ partition:	#This is the partition function from our C program.
 		#return value
 		move $v0, $t2
 		
-		#Popping the stack and using to return address to jump back.
+		#Popping the stack and using the return address to jump back.
 		lw $ra, ($sp)
 		addi $sp, $sp, 4
 		jr $ra
