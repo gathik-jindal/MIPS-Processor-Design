@@ -4,7 +4,7 @@ def typeCheck(typeMap: dict):
     '''
     'typeMap' must be a dictionary with key-value pairs as data and its type.
     The function returns true if all the keys match their dataTypes. It prints
-    an error and exits otherwise.
+    an error message and exits otherwise.
     '''
     if(not isinstance(typeMap, dict)):
         printErrorandExit(f"{typeMap} is not of type {type({})}")
