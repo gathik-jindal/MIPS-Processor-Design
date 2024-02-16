@@ -35,12 +35,12 @@ class Mux():
     def connectData(self, lineNum, val):
         self.__data[lineNum] = val
         
-    def getOutput:():
-        return self.__data[(self.mySelectLine())()]()
+    def getOutput(self):
+        return self.__data[self.__mySelectLine()]()
         
 if __name__ == "__main__":
     
-    ctrl=Contoller()
+    ctrl=Controller()
     m1 = Mux(2, ctrl.line1)
     m2 = Mux(2, ctrl.line2)
     m1.connectData(0, func1)
@@ -51,7 +51,8 @@ if __name__ == "__main__":
     while True:
         opcode = int(input())
         ctrl.run(opcode)
-        print(m1.getOutput())
+        print("m1:", m1.getOutput())
+        print("m2:", m2.getOutput())
     
     
     
