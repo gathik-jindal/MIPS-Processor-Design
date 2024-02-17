@@ -22,6 +22,22 @@ class Opcode(Enum):
     BREAK = "000000"
     MUL = "011100"
 
+class Funct(Enum):
+    SLL = "000000"
+    SRA = "000011"
+    XOR = "100110"
+    SUBU = "100011"
+    ADDU = "100001"
+    ADD = "100000"
+    SUB = "100010"
+    SLT = "101010"
+    SLTU = "101011"
+    JR = "001000"
+    BREAK = "001101"
+    SYSCALL = "001100"
+    MFHI = "010000"
+    MFLO = "010010"
+    
 def typeCheck(typeMap: dict):
     '''
     'typeMap' must be a dictionary with key-value pairs as data and its type.
