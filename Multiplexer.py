@@ -23,7 +23,7 @@ class Multiplexer():
         typeCheck({line: int, data: Callable})
         if(line>self.__size):
             printErrorandExit(f"No such port exists for a {self.__size}:{log2(self.__size)} mux.")
-        self.__input[line] = data()
+        self.__input[line] = data
         return
   
     def getData(self):
@@ -33,5 +33,5 @@ class Multiplexer():
         '''
         if(self.__control()>self.__size-1):
             printErrorandExit(f"Invalid Control Signal.")
-        return self.__input[self.__control()]
+        return self.__input[self.__control()]()
 
