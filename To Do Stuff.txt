@@ -8,6 +8,8 @@ To Do Ibrahim and Abhirath:
                                                             a) attributes: .size (eg 4: 1),  .Controller_class_object.atter
                                                             b) methods: .connectData(lineNumber, data)
                                                                         .getData()
+                                                            C) make the connectData method more dynamic
+                                                            d) if nothing works, implement a bus class.
 4) Controller class ===> Enum
 7) ALU Control Class     ===> Enum
 5) ALU Class            ===> command mapping
