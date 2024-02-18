@@ -99,9 +99,9 @@ class Register:
 
         ans = str(self)
         self.__val = int((ans[:start:] + val + ans[end::]), 2)
-        
-        if (self.__val >= 2**(self.__size -1)):
-            self.__val = - (int(str(self)[1::]))
+        if (self.__val >= (2**(self.__size-1))):
+            self.__val = (int(str(self)[1::],2) - 2**(self.__size -1))
+
 
             
     def readVal(self, start=0, end=None):
@@ -132,6 +132,29 @@ class Register:
         self.__val = val
 
 
+    def signed(self):
+        
+        """
+            It converts the Stored value into signed int and returns it too.
+        """
+        
+        if (self.__val >= (2**(self.__size-1))):
+            self.__val = (int(str(self)[1::],2) - 2**(self.__size -1))
+            
+        return self.__val
+
+    def unsigned(self):
+        
+        """
+            It converts the Stored value into unsigned int and returns it too.
+
+            Not recommended
+        """
+
+        self.__val = int(str(self),2)
+        return self.__val
+
+    
 
 if __name__ == "__main__":
     
@@ -140,5 +163,20 @@ if __name__ == "__main__":
     print(len(str(R1)))
     print(R1.getSize())
     print(R1.getVal())
+    R1.inc(100)
+    print(R1.getVal())
+    print(R1)
+    print(R1.writeBin("1", 0, 1))
+    print(R1.getVal())
+    print(R1.readVal(0,1))
+    print(R1.getVal())
+    print(R1.signed())
+    print(R1.readVal(0,1))
+    print(R1.getVal())
+    print(R1.unsigned())
+    print(R1.readVal(0,30))
+    print(R1.readBin(0,30))
+    print(R1.getVal())
+    print(R1)
     
         
