@@ -181,5 +181,3 @@ if __name__ == "__main__":
 
         print("Reg Write Phase")
         RegFile.write(0)
-   
-    
