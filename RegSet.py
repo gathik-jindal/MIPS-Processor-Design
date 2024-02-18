@@ -161,10 +161,10 @@ if __name__ == "__main__":
         return int(input("Enter regiseter ID to be written to: "))
 
     def w():
-        return int(input("Orders Sire !!!!!!!\n"))
+        return int(input("Orders, sir. Sir !!!!!!!\n"))
 
     def r():
-        return int(input("Orders Sire !!!!!!!\n"))
+        return int(input("Orders sir. Sir !!!!!!!\n"))
     
     RegFile = RegSet(2, 1, 32, 32)
     RegFile.writeEnable(w)
