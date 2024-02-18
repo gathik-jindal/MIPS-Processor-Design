@@ -94,8 +94,6 @@ def printErrorandExit(message:str):
     print("Program terminated.")
     sys.exit(1)
 
-def func():
-    return 1
 if __name__=='__main__':
     dic = {1: int, 2: int, 3: int, 4: Callable}
     print(typeCheck(dic))
