@@ -15,11 +15,6 @@ class Opcode(Enum):
     R_FORMAT = "000000"
     J = "000010"
     JAL = "000011"
-    JR = "000000"
-    DIV = "000000"
-    MFLO = "000000"
-    MFHI = "000000"
-    BREAK = "000000"
     MUL = "011100"
 
 class Funct(Enum):
@@ -37,7 +32,40 @@ class Funct(Enum):
     SYSCALL = "001100"
     MFHI = "010000"
     MFLO = "010010"
-    
+    DEF = "111111"
+
+class ALUOp(Enum):
+    ADDI = "010"
+    ADDIU = "010"
+    BEQ = "100"
+    BNE = "100"
+    LUI = "011"
+    LW = "010"
+    ORI = "111"
+    SLTI = "100"
+    SW = "010"
+    R_FORMAT = "000"
+    DIV = "110"
+    MUL = "101"
+    J = "001"
+    JAL = "001"
+    DEF = "001"
+
+
+class Operation(Enum):
+    NOP = "0000"
+    ADD = "0001"
+    SLL = "0010"
+    SRA = "0011"
+    SUB = "0100"
+    COMP = "0101"
+    OR = "0110"
+    XOR = "0111"
+    DIV = "1000"
+    MUL = "1001"
+    RET = "1010"
+    MAG = "1111"
+
 def typeCheck(typeMap: dict):
     '''
     'typeMap' must be a dictionary with key-value pairs as data and its type.
