@@ -92,10 +92,8 @@ class ALUControl:
         '''
         if(fetchALUOp):
             self.__setALUOp()
-        print(self.__ALUOp)
         if(funct != None and self.__ALUOp == ALUOp.R_FORMAT):
             self.__setFunct(funct)
-        print(self.__funct)
         
         if(self.__ALUOp not in self.__operations or self.__funct not in self.__rf_operations):
             printErrorandExit("ALU cannot handle this request. Please update the ALU.")
