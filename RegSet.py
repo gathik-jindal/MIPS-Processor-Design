@@ -48,6 +48,7 @@ class RegSet():
         typeCheck({pos:int, size:int, defaultVal:int})
 
         self._regset.insert(pos, Register(size, defaultVal))
+        self.__count += 1
 
 
     def writeEnable(self, ctrl:Callable):
