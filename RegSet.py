@@ -119,6 +119,7 @@ class RegSet():
         else:
             print("Reading is not enabled.")
             return self._ground
+        print()
 
     def write(self, portID = 0):
         
