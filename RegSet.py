@@ -114,8 +114,10 @@ class RegSet():
             printErrorandExit(f"Invalid Register ID: {regNumber}")
 
         if (self.__re() == 1):
+            print(f"Reading value from ${regNumber}.")
             return ((self._regset[regNumber]).getVal)
         else:
+            print("Reading is not enabled.")
             return self._ground
 
     def write(self, portID = 0):
@@ -140,11 +142,14 @@ class RegSet():
             writeData = int(writeData,2)
 
         if (self.__we() == 1):
+            print(f"Writing value {writeData} to ${regNumber}.")
             self._regset[regNumber].writeVal(writeData)
         else:
+            print("Write is not enabled")
             return self._ground
+        print()
 
-        
+
 
 if __name__ == "__main__":
 
