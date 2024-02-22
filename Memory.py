@@ -1,8 +1,41 @@
+from abc import ABC, abstractmethod
 import linecache
 from Utilities import typeCheck, printErrorandExit, convertToInt, convertToBase
 
 
-class DataMemory:
+class Memory(ABC):
+    """
+    Parent for various memory classes.
+    """
+
+    def __init__(self, fileName="LinkedListData.txt") -> None:
+        if not typeCheck({fileName: str}):
+            printErrorandExit(f"{fileName} not of type str")
+
+        self._fileName = "Memory/" + fileName
+
+        if (self._fileName.endswith(".txt") == False):
+            self._fileName = self._fileName + ".txt"
+
+    @abstractmethod
+    def loadWord(self, location: int) -> str:
+        """
+        Fetches the 32 bit word at that memory location.
+        """
+
+        pass
+
+    @abstractmethod
+    def storeWord(self, value: int, locatoin: int) -> None:
+        """
+        Stores the value by converting it to 8 digit hexadeciaml and stores
+        it at that memory location.
+        """
+
+        pass
+
+
+class DataMemory(Memory):
     """
     Handles/Contains strictly the .data part.
     Note file provided should be of .TXT format.
@@ -10,13 +43,7 @@ class DataMemory:
     """
 
     def __init__(self, fileName="LinkedListData.txt") -> None:
-        if not typeCheck({fileName: str}):
-            printErrorandExit(f"{fileName} not of type str")
-
-        self.__fileName = "Memory/" + fileName
-
-        if (self.__fileName.endswith(".txt") == False):
-            self.__fileName = self.__fileName + ".txt"
+        super().__init__(fileName)
 
     def loadWord(self, location=convertToInt("10010000")) -> int:
         """
@@ -30,8 +57,8 @@ class DataMemory:
 
         location += 1
 
-        linecache.checkcache(self.__fileName)
-        word = linecache.getline(self.__fileName, location).rstrip("\n")
+        linecache.checkcache(self._fileName)
+        word = linecache.getline(self._fileName, location).rstrip("\n")
 
         word = convertToInt(word, 16)
 
@@ -40,8 +67,8 @@ class DataMemory:
     def storeWord(self, value: int, location=convertToInt("10010000")) -> None:
         """
         Stores the word in the proceeding 32 bits / 4 memory location.
-
-        location and value should be of type integer.
+        In reality it is stored as 8 hexadecimal digits.
+        Location and value should be of type integer.
         """
 
         if not typeCheck({value: int, location: int}):
@@ -52,13 +79,13 @@ class DataMemory:
 
         value = convertToBase(value)
 
-        with open(self.__fileName, 'r') as fh:
+        with open(self._fileName, 'r') as fh:
             lines = fh.readlines()
 
         value = "0"*(8 - len(value)) + value
         lines[location] = value + '\n'
 
-        with open(self.__fileName, 'w') as fh:
+        with open(self._fileName, 'w') as fh:
             fh.writelines(lines)
 
 
