@@ -94,7 +94,35 @@ def printErrorandExit(message:str):
     print("Program terminated.")
     sys.exit(1)
 
+def convertToInt(word:str, base=16):
+    '''
+    This function converts the word to base 10.
+    '''
+
+    if not typeCheck({word: str, base: int}):
+        printErrorandExit(f"Data provided is not of type {word} -> str or {base} -> int")
+    
+    value = 0
+    pow = 1
+    word = word[::-1]
+
+    for x in word:
+        x = x.lower()
+        if x in "abcdefghijklmnopqrstuvwxyz" and base > 9:
+            x = ord(x) - ord("a") + 10
+        elif x in "abcdefghijklmnopqrstuvwxyz" and base <= 9:
+            printErrorandExit(f"{word} has letters but base ({base} <= 9)")
+        else:
+            x = pow*(int(x))
+
+        value += x
+        pow *= base
+    
+    return value
+
+
 if __name__=='__main__':
+    print(convertToInt("1A"))
     dic = {1: int, 2: int, 3: int, 4: Callable}
     print(typeCheck(dic))
     print(typeCheck.__doc__)
