@@ -67,7 +67,7 @@ class Operation(Enum):
     RET = "1010"
     MAG = "1111"
 
-def typeCheck(typeMap: dict):
+def typeCheck(typeMap: dict) -> bool:
     '''
     'typeMap' must be a dictionary with key-value pairs as data and its type.
     The function returns true if all the keys match their dataTypes. It prints
@@ -82,7 +82,7 @@ def typeCheck(typeMap: dict):
                 printErrorandExit(f"{key} is not of type {typeMap[key]}")
         return True
 
-def printErrorandExit(message:str):
+def printErrorandExit(message:str) -> None:
     '''
     This function is for printing an error message and exiting.
     The message must be a string.
@@ -94,7 +94,25 @@ def printErrorandExit(message:str):
     print("Program terminated.")
     sys.exit(1)
 
-def convertToInt(word:str, base=16):
+def convertToBase(number: int, base=16) -> str:
+    if number < base:
+        if (number > 9):
+            return chr(ord('a') + number - 10)
+        else:
+            return str(number)
+    
+    digit = number%base
+    
+    if digit < base:
+        if (digit > 9):
+            x = chr(ord('a') + digit - 10)
+        else:
+            x = str(number)
+    
+    return convertToBase(number//base, base) + x
+
+
+def convertToInt(word:str, base=16) -> int:
     '''
     This function converts the word to base 10.
     '''
@@ -123,6 +141,7 @@ def convertToInt(word:str, base=16):
 
 if __name__=='__main__':
     print(convertToInt("1A"))
+    print(convertToBase(26))
     dic = {1: int, 2: int, 3: int, 4: Callable}
     print(typeCheck(dic))
     print(typeCheck.__doc__)
