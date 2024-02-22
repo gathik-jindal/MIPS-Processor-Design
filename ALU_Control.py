@@ -1,5 +1,5 @@
 from Utilities import *
-from Controller import *
+from Control import *
 
 class ALUControl:
     '''
@@ -76,19 +76,19 @@ class ALUControl:
         
     def __setALUOp(self):
         '''
-            Fetches the ALU opcode from the controller and sets it.
+            Fetches the ALU opcode from the Control and sets it.
         '''
-        typeCheck({Controller.getOpcode(): Enum})
-        if(Controller.getOpcode() not in ALUOp):
+        typeCheck({Control.getOpcode(): Enum})
+        if(Control.getOpcode() not in ALUOp):
             printErrorandExit("Invalid operation request.\nNo such ALU opcode exists.")
-        self.__ALUOp = Controller.getOpcode()
+        self.__ALUOp = Control.getOpcode()
         return
     
     def getOperation(self, funct = None, fetchALUOp = True):
         '''
             Returns the operation code to be given to the ALU unit.
             @param funct: The function field value. If no value is given, it maintains the previous value.
-            @param fetchALUOp: If set to false, doesn't fetch any value from the Controller. True by default.
+            @param fetchALUOp: If set to false, doesn't fetch any value from the Control. True by default.
         '''
         if(fetchALUOp):
             self.__setALUOp()
