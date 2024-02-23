@@ -119,8 +119,9 @@ class ALUControl:
 if __name__ == '__main__':
     def getOpcode():
         return input("Enter the required Opcodes")
-    C = Control(getOpcode)
+    C = Control()
     aluc = ALUControl(C.getALUOp)
     #aluc = ALUControl(C.getALUOp, "011", "111111")
     while True:
+        C.run(getOpcode)
         print(aluc.getOperation("100001"))
