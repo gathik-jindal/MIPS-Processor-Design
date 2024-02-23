@@ -5,13 +5,22 @@ class ALUControl:
     '''
         Defines the ALUControl class to map the ALU opcodes and funct field values to the right operation code for ALU.
     '''
-    def __init__(self, aluOP = ALUOp.DEF, funct = Funct.DEF):
+    def __init__(self, control = None, aluOP = ALUOp.DEF, funct = Funct.DEF):
         '''
             @param aluOP: An optional parameter if the user wants to set a value for ALUOp during instantiation.
                           Set to ALU.DEF as default.
             @param funct: An optional parameter if the user wants to set a value for funct during instantiation.
                           Set to Funct.DEf as default.
+            @param control: It is the control line sent from the main controller.
         '''
+
+        if (control == None){
+            control = self._ground
+        }
+        
+        typeCheck({control:Callable})
+        self.__control = control
+
         try:
             if(ALUOp(aluOP) in ALUOp):
                 self.__ALUOp = ALUOp(aluOP)
@@ -58,7 +67,15 @@ class ALUControl:
                    ALUOp.DIV       :       Operation.DIV,
                    ALUOp.MUL       :       Operation.MUL
                    }
- 
+
+
+    def _ground(self):
+        """
+            It grounds control signals.
+        """
+
+        return 0
+    
     def __setFunct(self, funct: str):
         '''
             Sets the value of the funct field. 
@@ -78,10 +95,10 @@ class ALUControl:
         '''
             Fetches the ALU opcode from the Control and sets it.
         '''
-        typeCheck({Control.getOpcode(): Enum})
-        if(Control.getOpcode() not in ALUOp):
+        ctrl = self.__control()
+        if(ctrl not in ALUOp):
             printErrorandExit("Invalid operation request.\nNo such ALU opcode exists.")
-        self.__ALUOp = Control.getOpcode()
+        self.__ALUOp = ctrl
         return
     
     def getOperation(self, funct = None, fetchALUOp = True):
