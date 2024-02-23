@@ -35,6 +35,23 @@ class Memory(ABC):
         pass
 
 
+class InstructionMemory(Memory):
+    """
+    Handles/Contains strictly the .text part.
+    Note the file provided should be of .TXT format.
+    The fileName can optionally not have the filetype.
+    """
+
+    def __init__(self, fileName="LinkedListText") -> None:
+        super().__init__(fileName)
+
+    def loadWord(self, location: int) -> str:
+        """
+        Fetches the instruction at memory location <location>.
+        """
+        pass
+
+
 class DataMemory(Memory):
     """
     Handles/Contains strictly the .data part.

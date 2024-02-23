@@ -18,10 +18,10 @@ To Do Ibrahim and Abhirath:
 
 To Do Gathik:
 
-1) Instruction memory ( along with PC incrimenting and IF part of processor ??????? )
-2) Data Memory ( break into 4 parts ????? )
-3) GUI ????????
-4) ?????????????
+1) Instruction memory (IF part of processor)
+2) Data Memory (break into 3 parts -> gp's mem, sp's mem, .data)
+3) GUI (depends on if we finish early)
+4) PC Block (To discuss)
 
 ----------------------------Processor-----------------------------------
 
