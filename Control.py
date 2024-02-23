@@ -12,19 +12,19 @@ class Control():
 
         self.__decode = {
             
-           Opcode.ADDI.value      : [ALUOP.ADDI.value for i in range(11)],    # Change these control signals
-           Opcode.ADDIU.value     : [ALUOP.ADDIU.value for i in range(11)],
-           Opcode.BEQ.value       : [ALUOP.BEQ.value for i in range(11)],
-           Opcode.BNE.value       : [ALUOP.BNE.value for i in range(11)],
-           Opcode.LUI.value       : [ALUOP.LUI.value for i in range(11)],
-           Opcode.LW.value        : [ALUOP.LW.value for i in range(11)],
-           Opcode.ORI.value       : [ALUOP.ORI.value for i in range(11)],
-           Opcode.SLTI.value      : [ALUOP.SLTI.value for i in range(11)],
-           Opcode.SW.value        : [ALUOP.SW.value for i in range(11)],
-           Opcode.R_FORMAT.value  : [ALUOP.R_FORMAT.value for i in range(11)],
-           Opcode.J.value         : [ALUOP.J.value for i in range(11)],
-           Opcode.JAL.value       : [ALUOP.JAL.value for i in range(11)],
-           Opcode.MUL.value       : [ALUOP.MUL.value for i in range(11)]
+           Opcode.ADDI.value      : [ALUOp.ADDI.value for i in range(11)],    # Change these control signals
+           Opcode.ADDIU.value     : [ALUOp.ADDIU.value for i in range(11)],
+           Opcode.BEQ.value       : [ALUOp.BEQ.value for i in range(11)],
+           Opcode.BNE.value       : [ALUOp.BNE.value for i in range(11)],
+           Opcode.LUI.value       : [ALUOp.LUI.value for i in range(11)],
+           Opcode.LW.value        : [ALUOp.LW.value for i in range(11)],
+           Opcode.ORI.value       : [ALUOp.ORI.value for i in range(11)],
+           Opcode.SLTI.value      : [ALUOp.SLTI.value for i in range(11)],
+           Opcode.SW.value        : [ALUOp.SW.value for i in range(11)],
+           Opcode.R_FORMAT.value  : [ALUOp.R_FORMAT.value for i in range(11)],
+           Opcode.J.value         : [ALUOp.J.value for i in range(11)],
+           Opcode.JAL.value       : [ALUOp.JAL.value for i in range(11)],
+           Opcode.MUL.value       : [ALUOp.MUL.value for i in range(11)]
 
            }
 
