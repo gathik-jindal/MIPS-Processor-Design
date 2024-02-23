@@ -14,9 +14,9 @@ class ALUControl:
             @param control: It is the control line sent from the main controller.
         '''
 
-        if (control == None){
+        if (control == None):
             control = self._ground
-        }
+        
         
         typeCheck({control:Callable})
         self.__control = control
@@ -95,7 +95,7 @@ class ALUControl:
         '''
             Fetches the ALU opcode from the Control and sets it.
         '''
-        ctrl = self.__control()
+        ctrl = ALUOp(self.__control())
         if(ctrl not in ALUOp):
             printErrorandExit("Invalid operation request.\nNo such ALU opcode exists.")
         self.__ALUOp = ctrl
@@ -117,11 +117,12 @@ class ALUControl:
         return self.__operations[self.__ALUOp]
     
 if __name__ == '__main__':
+    
     def getOpcode():
-        return input("Enter the required Opcodes")
+        return input("Enter the required Opcodes: ")
     C = Control()
     aluc = ALUControl(C.getALUOp)
     #aluc = ALUControl(C.getALUOp, "011", "111111")
     while True:
-        C.run(getOpcode)
+        C.run(getOpcode())
         print(aluc.getOperation("100001"))
