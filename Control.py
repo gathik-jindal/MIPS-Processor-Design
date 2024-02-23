@@ -12,19 +12,19 @@ class Control():
 
         self.__decode = {
             
-           Opcode.ADDI.value      : [1 for i in range(11)],    # Change these control signals
-           Opcode.ADDIU.value     : [2 for i in range(11)],
-           Opcode.BEQ.value       : [3 for i in range(11)],
-           Opcode.BNE.value       : [i for i in range(11)],
-           Opcode.LUI.value       : [5*i for i in range(11)],
-           Opcode.LW.value        : [i+1 for i in range(11)],
-           Opcode.ORI.value       : [6 for i in range(11)],
-           Opcode.SLTI.value      : [1 for i in range(11)],
-           Opcode.SW.value        : [1 for i in range(11)],
-           Opcode.R_FORMAT.value  : [1 for i in range(11)],
-           Opcode.J.value         : [1 for i in range(11)],
-           Opcode.JAL.value       : [1 for i in range(11)],
-           Opcode.MUL.value       : [1 for i in range(11)]
+           Opcode.ADDI.value      : [ALUOP.ADDI.value for i in range(11)],    # Change these control signals
+           Opcode.ADDIU.value     : [ALUOP.ADDIU.value for i in range(11)],
+           Opcode.BEQ.value       : [ALUOP.BEQ.value for i in range(11)],
+           Opcode.BNE.value       : [ALUOP.BNE.value for i in range(11)],
+           Opcode.LUI.value       : [ALUOP.LUI.value for i in range(11)],
+           Opcode.LW.value        : [ALUOP.LW.value for i in range(11)],
+           Opcode.ORI.value       : [ALUOP.ORI.value for i in range(11)],
+           Opcode.SLTI.value      : [ALUOP.SLTI.value for i in range(11)],
+           Opcode.SW.value        : [ALUOP.SW.value for i in range(11)],
+           Opcode.R_FORMAT.value  : [ALUOP.R_FORMAT.value for i in range(11)],
+           Opcode.J.value         : [ALUOP.J.value for i in range(11)],
+           Opcode.JAL.value       : [ALUOP.JAL.value for i in range(11)],
+           Opcode.MUL.value       : [ALUOP.MUL.value for i in range(11)]
 
            }
 
