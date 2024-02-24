@@ -203,6 +203,55 @@ class DataMemory(Memory):
     def __init__(self, fileName="LinkedListData.txt") -> None:
         super().__init__(fileName)
 
+    def loadString(self, location: int) -> str:
+        """
+        This function gets the entire word (string), until the null terminating
+        byte is read.
+
+        It has a location param, which specifies the starting location of the string.
+        """
+
+        word = ""
+        flag = True
+
+        location = location - DATA
+        precLocation = 4 - location % 4
+        location //= 4
+
+        linecache.checkcache(self._fileName)
+
+        if (precLocation % 4 != 0):
+            location += 1
+
+            temp = linecache.getline(self._fileName, location)
+
+            for i in range(precLocation-1, -1, -1):
+                chars = temp[8*i:8*i+8]
+                chars = chr(int(chars, 2))
+
+                if chars == '\0':
+                    flag = False
+                    break
+
+                word = word + chars
+
+        location += 1
+
+        while (flag):
+            temp = linecache.getline(self._fileName, location).rstrip("\n")
+            for i in range(3, -1, -1):
+                chars = temp[8*i:8*i+8]
+                chars = chr(int(chars, 2))
+
+                if chars == '\0':
+                    flag = False
+                    break
+
+                word = word + chars
+            location += 1
+
+        return word
+
     def loadWord(self, location=DATA) -> int:
         """
         Gets the word from that Memory address.
@@ -261,6 +310,7 @@ if __name__ == "__main__":
     print(obj.loadWord(DATA + x))
     obj.storeWord(value, DATA + x)
     print(obj.loadWord(DATA + x))
+    print(obj.loadString(DATA + 70))
 
     obj = Stack("LinkedListStackBin")
     x = 8
