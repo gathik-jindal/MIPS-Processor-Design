@@ -12,19 +12,19 @@ class Control():
 
         self.__decode = {
             
-           Opcode.ADDI.value      : [ALUOp.ADDI.value for i in range(11)],    # Change these control signals
-           Opcode.ADDIU.value     : [ALUOp.ADDIU.value for i in range(11)],
-           Opcode.BEQ.value       : [ALUOp.BEQ.value for i in range(11)],
-           Opcode.BNE.value       : [ALUOp.BNE.value for i in range(11)],
-           Opcode.LUI.value       : [ALUOp.LUI.value for i in range(11)],
-           Opcode.LW.value        : [ALUOp.LW.value for i in range(11)],
-           Opcode.ORI.value       : [ALUOp.ORI.value for i in range(11)],
-           Opcode.SLTI.value      : [ALUOp.SLTI.value for i in range(11)],
-           Opcode.SW.value        : [ALUOp.SW.value for i in range(11)],
-           Opcode.R_FORMAT.value  : [ALUOp.R_FORMAT.value for i in range(11)],
-           Opcode.J.value         : [ALUOp.J.value for i in range(11)],
-           Opcode.JAL.value       : [ALUOp.JAL.value for i in range(11)],
-           Opcode.MUL.value       : [ALUOp.MUL.value for i in range(11)]
+           Opcode.ADDI.value      : [0, 0, 0, 0, 0, ALUOp.ADDI, 1, 1, 1, 0, 0],    # Change these control signals
+           Opcode.ADDIU.value     : [0, 0, 0, 0, 0, ALUOp.ADDIU, 1, 1, 1, 0, 0],
+           Opcode.BEQ.value       : [0, 1, 0, 0, 0, ALUOp.BEQ, 0, 0, 1, 0, 1],
+           Opcode.BNE.value       : [0, 1, 0, 0, 0, ALUOp.BNE, 0, 0, 1, 1, 1],
+           Opcode.LUI.value       : [0, 0, 0, 0, 0, ALUOp.LUI, 1, 1, 0, 0, 0],
+           Opcode.LW.value        : [0, 0, 1, 0, 1, ALUOp.LW, 1, 1, 1, 0, 0],
+           Opcode.ORI.value       : [0, 0, 0, 0, 0, ALUOp.ORI, 1, 1, 1, 0, 0],
+           Opcode.SLTI.value      : [0, 0, 0, 0, 0, ALUOp.SLTI, 1, 1, 1, 0, 0],
+           Opcode.SW.value        : [0, 0, 0, 1, 0, ALUOp.ADDI, 1, 0, 1, 0, 0],
+           Opcode.R_FORMAT.value  : [1, 0, 0, 0, 0, ALUOp.R_FORMAT, 0, 1, 1, 0, 0],
+           Opcode.J.value         : [0, 0, 0, 0, 0, ALUOp.J, 0, 0, 0, 0, 2],
+           Opcode.JAL.value       : [3, 0, 0, 0, 2, ALUOp.JAL, 0, 1, 0, 0, 2],
+           Opcode.MUL.value       : [1, 0, 0, 0, 0, ALUOp.MUL, 0, 1, 1, 0, 0 ]
 
            }
 
