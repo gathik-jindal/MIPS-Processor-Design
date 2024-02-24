@@ -39,9 +39,9 @@ class Processor():
 
         RegDstMux = Multiplexer(3, Controller.getRegDst)
         ALUSrcMux = Multiplexer(3, Controller.getALUSrc)
-        WriteBackMux = Multiplexer()
-        BranchSelect = Multiplexer()
-        PCSelect = Multiplexer()
+        WriteBackMux = Multiplexer(3, Controller.getWB)
+        BranchSelect = Multiplexer(2, Controller.getBranchSelect)
+        PCSelect = Multiplexer(4, Controller.getpcSelect)
 
         #Creating Data path
 
