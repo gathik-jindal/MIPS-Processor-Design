@@ -129,11 +129,20 @@ class Control():
 
         return self.__state[10]
 
+    def setpcSelect(self, val:int ):
+
+        """
+            Sets the pcSelect control line.
+        """
+        typeCheck({val : int})
+        self.__state[10] = val
+
     def dump(self, opcode):
 
         """
             Prints the current control signals.
         """
+        
         print(f"The control signals generated for Instruction '{Opcode(opcode).name} ({opcode})' are:\n\
             RegDest Mux: {self.__state[0]}\n\
             Branch Signal: {self.__state[1]}\n\
