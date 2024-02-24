@@ -136,6 +136,7 @@ class Control():
         """
         typeCheck({val : int})
         self.__state[10] = val
+        self.__state[7] = 0
 
     def dump(self, opcode):
 
