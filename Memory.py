@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 import linecache
-from Utilities import typeCheck, printErrorandExit, convertToInt, convertToBase
+from Utilities import typeCheck, printErrorandExit
+
+DATA = int("10010000", 16)
+OGSTACKPOINTER = int("7fffeffc", 16)
+OGGLOBALPOINTER = int("10008000", 16)
 
 
 class Memory(ABC):
@@ -8,7 +12,7 @@ class Memory(ABC):
     Parent for various memory classes.
     """
 
-    def __init__(self, fileName="LinkedListData.txt") -> None:
+    def __init__(self, fileName: str) -> None:
         typeCheck({fileName: str})
 
         self._fileName = "Memory/" + fileName
@@ -25,30 +29,168 @@ class Memory(ABC):
         pass
 
     @abstractmethod
-    def storeWord(self, value: int, locatoin: int) -> None:
+    def storeWord(self, value: int, location: int) -> None:
         """
-        Stores the value by converting it to 8 digit hexadeciaml and stores
-        it at that memory location.
+        Stores the value at that memory location.
         """
 
         pass
 
 
-class InstructionMemory(Memory):
+class Global(Memory):
     """
-    Handles/Contains strictly the .text part.
+    Handles/Contains strictly the memory handeled by $gp.
     Note the file provided should be of .TXT format.
     The fileName can optionally not have the filetype.
     """
 
-    def __init__(self, fileName="LinkedListText") -> None:
+    def __init__(self, fileName="LinkedListGlobalBin.txt") -> None:
+        self.__gpWrtToFile = 0
+        super().__init__(fileName)
+
+    def storeWord(self, value: int, location: int) -> None:
+        """
+        Stores the word in the global heap.
+        """
+        typeCheck({location: int, value: str})
+
+        location = location - OGGLOBALPOINTER
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+        location += self.__gpWrtToFile
+
+        with open(self._fileName, 'r') as fh:
+            lines = fh.readlines()
+
+        if location >= len(lines):
+            for i in range(len(lines), location+1):
+                lines.append('\n')
+
+        if location < 0:
+            while (location < 0):
+                lines = ['\n'] + lines
+                self.__gpWrtToFile += 1
+                location += 1
+
+        lines[location] = value + '\n'
+
+        with open(self._fileName, 'w') as fh:
+            fh.writelines(lines)
+
+    def loadWord(self, location: int) -> str:
+        """
+        Loads the word from the global heap.
+        """
+
+        typeCheck({location: int})
+
+        location = location - OGGLOBALPOINTER
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+        location += 1 + self.__gpWrtToFile
+
+        linecache.checkcache(self._fileName)
+        word = linecache.getline(self._fileName, location).rstrip("\n")
+
+        return word
+
+
+class Stack(Memory):
+    """
+    Handles/Contains strictly the memory handeled by $sp.
+    Note the file provided should be of .TXT format.
+    The fileName can optionally not have the filetype.
+    """
+
+    def __init__(self, fileName="LinkedListStackBin.txt") -> None:
+        super().__init__(fileName)
+
+    def storeWord(self, value: int, location: int) -> None:
+        """
+        Stores the word in the stack.
+        """
+        typeCheck({location: int, value: str})
+
+        location = OGSTACKPOINTER - location
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+
+        with open(self._fileName, 'r') as fh:
+            lines = fh.readlines()
+
+        if location >= len(lines):
+            for i in range(len(lines), location+1):
+                lines.append('\n')
+
+        lines[location] = value + '\n'
+
+        with open(self._fileName, 'w') as fh:
+            fh.writelines(lines)
+
+    def loadWord(self, location: int) -> str:
+        """
+        Loads the word from the stack.
+        """
+
+        typeCheck({location: int, value: str})
+
+        location = OGSTACKPOINTER - location
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+        location += 1
+
+        linecache.checkcache(self._fileName)
+        word = linecache.getline(self._fileName, location).rstrip("\n")
+
+        return word
+
+
+class InstructionMemory(Memory):
+    """
+    Handles/Contains strictly the .text part.
+    Only has a loadWord method.
+    Note the file provided should be of .TXT format.
+    The fileName can optionally not have the filetype.
+    """
+
+    def __init__(self, fileName="LinkedListTextBin") -> None:
         super().__init__(fileName)
 
     def loadWord(self, location: int) -> str:
         """
         Fetches the instruction at memory location <location>.
         """
-        pass
+        typeCheck({location: int})
+
+        location = location - DATA
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+        location += 1
+
+        linecache.checkcache(self._fileName)
+        word = linecache.getline(self._fileName, location).rstrip("\n")
+
+        return word
 
 
 class DataMemory(Memory):
@@ -61,40 +203,46 @@ class DataMemory(Memory):
     def __init__(self, fileName="LinkedListData.txt") -> None:
         super().__init__(fileName)
 
-    def loadWord(self, location=convertToInt("10010000")) -> int:
+    def loadWord(self, location=DATA) -> int:
         """
         Gets the word from that Memory address.
         """
         typeCheck({location: int})
 
-        location = location - convertToInt("10010000")
+        location = location - DATA
 
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
         location += 1
 
         linecache.checkcache(self._fileName)
         word = linecache.getline(self._fileName, location).rstrip("\n")
 
-        word = convertToInt(word, 16)
-
         return word
 
-    def storeWord(self, value: int, location=convertToInt("10010000")) -> None:
+    def storeWord(self, value: str, location=DATA) -> None:
         """
         Stores the word in the proceeding 32 bits / 4 memory location.
         In reality it is stored as 8 hexadecimal digits.
         Location and value should be of type integer.
         """
 
-        typeCheck({value: int, location: int})
+        typeCheck({value: str, location: int})
 
-        location = location - convertToInt("10010000")
+        location = location - DATA
 
-        value = convertToBase(value)
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
 
         with open(self._fileName, 'r') as fh:
             lines = fh.readlines()
 
-        value = "0"*(8 - len(value)) + value
         lines[location] = value + '\n'
 
         with open(self._fileName, 'w') as fh:
@@ -103,10 +251,26 @@ class DataMemory(Memory):
 
 if __name__ == "__main__":
 
-    # .data starts from 0x10010000
+    # .data starts from 0x10010000 (DATA)
+    # $sp starts from 0x7fffeffc (OGSTACKPOINTER)
+    # $gp starts from 0x10008000 (OGGLOBALPOINTER)
+    value = "11111111111111111111111111111111"
 
-    obj = DataMemory("LinkedListData")
-    x = 1
-    print(obj.loadWord(convertToInt("10010000") + x))
-    obj.storeWord(26, convertToInt("10010000") + x)
-    print(obj.loadWord(convertToInt("10010000") + x))
+    obj = DataMemory("LinkedListDataBin")
+    x = 4
+    print(obj.loadWord(DATA + x))
+    obj.storeWord(value, DATA + x)
+    print(obj.loadWord(DATA + x))
+
+    obj = Stack("LinkedListStackBin")
+    x = 8
+    obj.storeWord(value, OGSTACKPOINTER - x)
+    print(obj.loadWord(OGSTACKPOINTER - x))
+
+    obj = Global("LinkedListHeapBin")
+    x = 8
+    obj.storeWord(value, OGGLOBALPOINTER - x)
+    print(obj.loadWord(OGGLOBALPOINTER - x))
+    x = -8
+    obj.storeWord(value, OGGLOBALPOINTER - x)
+    print(obj.loadWord(OGGLOBALPOINTER - x))

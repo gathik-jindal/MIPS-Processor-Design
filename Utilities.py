@@ -3,6 +3,7 @@ from math import log2, ceil
 from enum import Enum
 from typing import Callable
 
+
 class Opcode(Enum):
     ADDI = "001000"
     ADDIU = "001001"
@@ -17,6 +18,7 @@ class Opcode(Enum):
     J = "000010"
     JAL = "000011"
     MUL = "011100"
+
 
 class Funct(Enum):
     SLL = "000000"
@@ -34,6 +36,7 @@ class Funct(Enum):
     MFHI = "010000"
     MFLO = "010010"
     DEF = "111111"
+
 
 class ALUOp(Enum):
     ADDI = "010"
@@ -67,81 +70,37 @@ class Operation(Enum):
     RET = "1010"
     MAG = "1111"
 
+
 def typeCheck(typeMap: dict) -> bool:
     '''
     'typeMap' must be a dictionary with key-value pairs as data and its type.
     The function returns true if all the keys match their dataTypes. It prints
     an error and exits otherwise.
     '''
-    if(not isinstance(typeMap, dict)):
+    if (not isinstance(typeMap, dict)):
         printErrorandExit(f"{typeMap} is not of type {type({})}")
 
     else:
         for key in typeMap:
-            if(key == None or not isinstance(key, typeMap[key])):
+            if (key == None or not isinstance(key, typeMap[key])):
                 printErrorandExit(f"{key} is not of type {typeMap[key]}")
         return True
 
-def printErrorandExit(message:str) -> None:
+
+def printErrorandExit(message: str) -> None:
     '''
     This function is for printing an error message and exiting.
     The message must be a string.
     '''
-    if(not isinstance(message, str)):
+    if (not isinstance(message, str)):
         print(f"{message} is not of type {type('')}")
         sys.exit(1)
     print(message)
     print("Program terminated.")
     sys.exit(1)
 
-def convertToBase(number: int, base=16) -> str:
-    if number < base:
-        if (number > 9):
-            return chr(ord('a') + number - 10)
-        else:
-            return str(number)
-    
-    digit = number%base
-    
-    if digit < base:
-        if (digit > 9):
-            x = chr(ord('a') + digit - 10)
-        else:
-            x = str(number)
-    
-    return convertToBase(number//base, base) + x
 
-
-def convertToInt(word:str, base=16) -> int:
-    '''
-    This function converts the word to base 10.
-    '''
-
-    if not typeCheck({word: str, base: int}):
-        printErrorandExit(f"Data provided is not of type {word} -> str or {base} -> int")
-    
-    value = 0
-    pow = 1
-    word = word[::-1]
-
-    for x in word:
-        x = x.lower()
-        if x in "abcdefghijklmnopqrstuvwxyz" and base > 9:
-            x = ord(x) - ord("a") + 10
-        elif x in "abcdefghijklmnopqrstuvwxyz" and base <= 9:
-            printErrorandExit(f"{word} has letters but base ({base} <= 9)")
-        else:
-            x = pow*(int(x))
-
-        value += x
-        pow *= base
-    
-    return value
-
-
-if __name__=='__main__':
-    print(convertToInt("1A"))
-    print(convertToBase(26))
+if __name__ == '__main__':
     dic = {1: int, 2: int, 3: int, 4: Callable}
     print(typeCheck(dic))
     print(typeCheck.__doc__)
