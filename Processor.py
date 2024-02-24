@@ -27,6 +27,7 @@ class Processor():
 
         InstructionMemory = InstructionMemory(input("Enter instruction file name (Has to be in memory folder): "))
         DataMemory = DataMemory(input("Enter instruction file name (Has to be in memory folder): "))
+        #### set enable lines.
         
         
         ALUController = ALUControl(Controller.getALUOp, Controller.setpcSelect)
