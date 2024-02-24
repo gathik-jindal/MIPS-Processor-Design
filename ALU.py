@@ -52,6 +52,79 @@ class ALU():
 
       pass
 
+    def __nop(self):
+      """
+      """
+
+      pass
+
+    def __add(self):
+      """
+      """
+
+      pass
+
+    def __sll(self):
+      """
+      """
+
+      pass
+
+    def __sra(self):
+      """
+      """
+
+      pass
+
+    def __sub(self):
+      """
+      """
+
+      pass
+
+    def __comp(self):
+      """
+      """
+
+      pass
+
+    def __or(self):
+      """
+      """
+
+      pass
+
+    def __xor(self):
+      """
+      """
+
+      pass
+
+    def __div(self):
+      """
+      """
+
+      pass
+
+    def __mul(self):
+      """
+      """
+
+      pass
+
+    def __ret(self):
+      """
+      """
+
+      pass
+
+    def __mag(self):
+      """
+      """
+
+      pass
+
+
     def setInputConnection(self, portID):
       pass
 
