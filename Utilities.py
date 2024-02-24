@@ -33,6 +33,7 @@ class Funct(Enum):
     SYSCALL = "001100"
     MFHI = "010000"
     MFLO = "010010"
+    DIV = "011010"
     DEF = "111111"
 
 class ALUOp(Enum):
