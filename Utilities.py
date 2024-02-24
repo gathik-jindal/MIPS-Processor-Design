@@ -47,7 +47,6 @@ class ALUOp(Enum):
     SLTI = "100"
     SW = "010"
     R_FORMAT = "000"
-    DIV = "110"
     MUL = "101"
     J = "001"
     JAL = "001"
