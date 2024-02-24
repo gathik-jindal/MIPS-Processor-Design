@@ -1,4 +1,5 @@
 import sys
+from math import log2, ceil
 from enum import Enum
 from typing import Callable
 
