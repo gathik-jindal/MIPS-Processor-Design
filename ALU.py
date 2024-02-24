@@ -25,7 +25,18 @@ class ALU():
     self.__outPorts = [ self._ground for i in range(self.__oPC)] 
 
     self.__operations = {
-
+            Operation.NOP           :           self.__nop,
+            Operation.ADD           :           self.__add,
+            Operation.SLL           :           self.__sll,
+            Operation.SRA           :           self.__sra,
+            Operation.SUB           :           self.__sub,
+            Operation.COMP          :           self.__comp,
+            Operation.OR            :           self.__or,
+            Operation.XOR           :           self.__xor,
+            Operation.DIV           :           self.__div,
+            Operation.MUL           :           self.__mul,
+            Operation.RET           :           self.__ret,
+            Operation.MAG           :           self.__mag
     }
 
     def _ground(self):
