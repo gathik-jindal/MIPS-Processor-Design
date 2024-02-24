@@ -47,6 +47,7 @@ class ALUControl:
                    Funct.SYSCALL   :        Operation.MAG,
                    Funct.MFHI      :        Operation.MAG,
                    Funct.MFLO      :        Operation.MAG,
+                   Funct.DIV       :        Operation.DIV,
                    Funct.DEF       :        Operation.NOP
                    }
         
@@ -64,7 +65,6 @@ class ALUControl:
                    ALUOp.J         :       Operation.NOP,
                    ALUOp.JAL       :       Operation.NOP,
                    ALUOp.DEF       :       Operation.NOP,
-                   ALUOp.DIV       :       Operation.DIV,
                    ALUOp.MUL       :       Operation.MUL
                    }
 
