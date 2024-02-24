@@ -54,7 +54,7 @@ class ALUControl:
                    ALUOp.ADDIU     :       Operation.ADD,
                    ALUOp.BEQ       :       Operation.COMP,
                    ALUOp.BNE       :       Operation.COMP,
-                   ALUOp.LUI       :       Operation.SLL,
+                   ALUOp.LUI       :       Operation.LUI,
                    ALUOp.LW        :       Operation.ADD,
                    ALUOp.ORI       :       Operation.OR,
                    ALUOp.SLTI      :       Operation.COMP,
