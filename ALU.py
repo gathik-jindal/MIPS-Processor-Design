@@ -7,7 +7,7 @@ class ALU():
     It is the ALU of a processor and can perform functions like addition, subtraction, etc.
   """
 
-  def __init__(self, control = None, inpPortCount = 2, outPortCount = 1):
+  def __init__(self, control = None, inpPortCount = 3, outPortCount = 2):
     """
       This is a constructor that creates an ALU for a processor. The created ALU variable number of input and output ports.
     """
@@ -39,7 +39,7 @@ class ALU():
 
       pass
 
-    def setInputConbnection(self, portID):
+    def setInputConnection(self, portID):
       pass
 
     def getOutput(self, portID):

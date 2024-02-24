@@ -159,6 +159,8 @@ class Register:
 if __name__ == "__main__":
     
     R1 = Register(32)
+    R2 = Register(32, -5)
+    print(R2)
     print(R1)
     print(len(str(R1)))
     print(R1.getSize())

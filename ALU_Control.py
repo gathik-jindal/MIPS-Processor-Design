@@ -21,14 +21,12 @@ class ALUControl:
         typeCheck({control:Callable})
         self.__control = control
 
-        try:
-            if(ALUOp(aluOP) in ALUOp):
-                self.__ALUOp = ALUOp(aluOP)
+        try:    
+            self.__ALUOp = ALUOp(aluOP)
         except:
             printErrorandExit("Invalid operation request.\nNo such ALU opcode exists.")
         try:
-            if(Funct(funct) in Funct):
-                self.__funct = Funct(funct)
+            self.__funct = Funct(funct)
         except:
             printErrorandExit("Invalid operation request.\nNo such funct value exists.")
 

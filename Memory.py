@@ -5,6 +5,7 @@ from Utilities import typeCheck, printErrorandExit
 DATA = int("10010000", 16)
 OGSTACKPOINTER = int("7fffeffc", 16)
 OGGLOBALPOINTER = int("10008000", 16)
+TEXT = int("00400000", 16)
 
 
 class Memory(ABC):
@@ -178,7 +179,7 @@ class InstructionMemory(Memory):
         """
         typeCheck({location: int})
 
-        location = location - DATA
+        location = location - TEXT
 
         if (location % 4 != 0):
             printErrorandExit(
