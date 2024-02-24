@@ -12,7 +12,7 @@ class ALU():
       This is a constructor that creates an ALU for a processor. The created ALU variable number of input and output ports.
     """
 
-    if (control = None):
+    if (control == None):
       control = self._ground
       
     typeCheck({control : Callable, inpPortCount : int, outPortCount : int})

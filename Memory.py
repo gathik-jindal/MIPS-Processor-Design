@@ -9,8 +9,7 @@ class Memory(ABC):
     """
 
     def __init__(self, fileName="LinkedListData.txt") -> None:
-        if not typeCheck({fileName: str}):
-            printErrorandExit(f"{fileName} not of type str")
+        typeCheck({fileName: str})
 
         self._fileName = "Memory/" + fileName
 
@@ -66,9 +65,7 @@ class DataMemory(Memory):
         """
         Gets the word from that Memory address.
         """
-        if not typeCheck({location: int}):
-            printErrorandExit(
-                f"Location provided ({location}) not of type integer.")
+        typeCheck({location: int})
 
         location = location - convertToInt("10010000")
 
@@ -88,9 +85,7 @@ class DataMemory(Memory):
         Location and value should be of type integer.
         """
 
-        if not typeCheck({value: int, location: int}):
-            printErrorandExit(f"value ({value}) or location ({
-                              location}) is not of type integer.")
+        typeCheck({value: int, location: int})
 
         location = location - convertToInt("10010000")
 
