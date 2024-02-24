@@ -37,9 +37,9 @@ class Processor():
         RegisterFile.writeEnable(Controller.getRegWrite)
         RegisterFile.readEnable(Controller.getRegRead)
 
-        RegWriteMux = Multiplexer()
-        ALUPortMux = Multiplexer()
-        WritebackMux = Multiplexer()
+        RegDstMux = Multiplexer(3, Controller.getRegDst)
+        ALUSrcMux = Multiplexer(3, Controller.getALUSrc)
+        WriteBackMux = Multiplexer()
         BranchSelect = Multiplexer()
         PCSelect = Multiplexer()
 
