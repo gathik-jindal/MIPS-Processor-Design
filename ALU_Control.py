@@ -5,7 +5,7 @@ class ALUControl:
     '''
         Defines the ALUControl class to map the ALU opcodes and funct field values to the right operation code for ALU.
     '''
-    def __init__(self, control = None, aluOP = ALUOp.DEF, funct = Funct.DEF):
+    def __init__(self, control = None, settr = None, aluOP = ALUOp.DEF, funct = Funct.DEF):
         '''
             @param aluOP: An optional parameter if the user wants to set a value for ALUOp during instantiation.
                           Set to ALU.DEF as default.
@@ -16,7 +16,11 @@ class ALUControl:
 
         if (control == None):
             control = self._ground
+
+        if (settr == None):
+            settr = self._ground
         
+        self.__ctrl = settr
         
         typeCheck({control:Callable})
         self.__control = control
@@ -67,13 +71,18 @@ class ALUControl:
                    }
 
 
-    def _ground(self):
+    def _ground(self, val=0):
         """
             It grounds control signals.
         """
 
         return 0
-    
+        
+    def __pcSelectModifier(self):
+        '''
+            Changes the pcSelect control signal if instruction is a jr.
+        '''
+        self.__ctrl(3)
     def __setFunct(self, funct: str):
         '''
             Sets the value of the funct field. 
@@ -112,6 +121,8 @@ class ALUControl:
         
         if(self.__ALUOp not in self.__operations or self.__funct not in self.__rf_operations):
             printErrorandExit("ALU cannot handle this request. Please update the ALU.")
+        if(self.__funct == Funct.JR):
+            self.__pcSelectModifier()
         return self.__operations[self.__ALUOp]
     
 if __name__ == '__main__':
