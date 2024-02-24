@@ -36,7 +36,7 @@ class RegSet():
             Used to ground signals.
         """
 
-        return 0;
+        return 0
 
 
     def insertReg(self, pos:int, size:int, defaultVal = 0):
@@ -119,7 +119,6 @@ class RegSet():
         else:
             print("Reading is not enabled.")
             return self._ground
-        print()
 
     def write(self, portID = 0):
         
