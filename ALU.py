@@ -33,6 +33,8 @@ class ALU():
           Used for grounding control signals
       """
 
+      return 0
+
     def run(self):
       """
       """
