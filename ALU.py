@@ -152,7 +152,17 @@ class ALU():
     self.__inpPorts[portID] = portConnection
 
   def getOutput(self, portID=1):
+    '''
+        This method can be used to get output from anyone of the output ports of the ALU.
+        It is set to return output of port 1 by default.
+    '''
     typeCheck({portID: int})
     if(portID >= self.__oPC):
       printErrorandExit(f"Invalid portID for an ALU with {self.__oPC} output ports.")
     return self.__outPorts[portID]
+  
+  def getZeroFlag(self):
+    '''
+        Method to get the zero flag from ALU. 
+    '''
+    return self.__outPorts[0]
