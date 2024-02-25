@@ -11,9 +11,14 @@ class Multiplexer():
         if(size<=1):
             printErrorandExit(f"Invalid size for a multiplexer.")
         self.__size = 2**ceil(log2(size))
-        self.__input = [None]*self.__size
+        self.__input = [self.__ground for i in range(self.__size())]
         self.__control = control
 
+    def __ground():
+        '''
+            Used for grounding input
+        '''
+        return 0
     def connectData(self, line: int, data: Callable):
         '''
             A method to connect a port of mux to some data.

@@ -57,18 +57,19 @@ class ALUOp(Enum):
 
 
 class Operation(Enum):
-    NOP = "0000"
-    ADD = "0001"
-    SLL = "0010"
-    SRA = "0011"
-    SUB = "0100"
-    COMP = "0101"
-    OR = "0110"
-    XOR = "0111"
-    DIV = "1000"
-    MUL = "1001"
-    RET = "1010"
-    MAG = "1111"
+    NOP = "00000"
+    ADD = "00001"
+    SLL = "00010"
+    SRA = "00011"
+    SUB = "00100"
+    COMP = "00101"
+    OR = "00110"
+    XOR = "00111"
+    DIV = "01000"
+    MUL = "01001"
+    RET = "01010"
+    MAG = "01111"
+    LUI = "10000"
 
 
 def typeCheck(typeMap: dict) -> bool:
