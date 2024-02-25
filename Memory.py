@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import linecache
 from Utilities import typeCheck, printErrorandExit
+from typing import Callable
 
 DATA = int("10010000", 16)
 OGSTACKPOINTER = int("7fffeffc", 16)
@@ -170,10 +171,27 @@ class InstructionMemory(Memory):
     The fileName can optionally not have the filetype.
     """
 
-    def __init__(self, fileName="LinkedListTextBin") -> None:
+    def __init__(self, readControl: Callable, fileName="LinkedListTextBin") -> None:
         super().__init__(fileName)
 
+        typeCheck({readControl: Callable})
+        self.__readControl = readControl
+
     def loadWord(self, location: int) -> str:
+        if (self.__readControl() == 0):
+            print("Error: readControl for instruction memory is 0, cannot read!")
+            return ""
+        return self.__loadWord(location)
+
+    def storeWord(self, value: int, location: int) -> None:
+        """
+        Dummy class, will never be called.
+        """
+
+        printErrorandExit(
+            "Error: storeWord was performed on InstructionMemory!")
+
+    def __loadWord(self, location: int) -> str:
         """
         Fetches the instruction at memory location <location>.
         """
@@ -201,8 +219,25 @@ class DataMemory(Memory):
     The fileName can optionally not have the filetype.
     """
 
-    def __init__(self, fileName="LinkedListData.txt") -> None:
+    def __init__(self, readControl: Callable, writeControl: Callable, fileName="LinkedListData.txt") -> None:
         super().__init__(fileName)
+
+        typeCheck({readControl: Callable, writeControl: Callable})
+
+        self.__readControl = readControl
+        self.__writeControl = writeControl
+
+    def loadWord(self, location: int) -> str:
+        if (self.__readControl() == 0):
+            print("Error: readControl is 0, cannot read word from DataMemory.")
+            return ""
+        return self.__loadWord(location)
+
+    def storeWord(self, value, location: int) -> str:
+        if (self.__writeControl() == 0):
+            print("Error: writeControl is 0, cannot write word to DataMemory.")
+            return ""
+        self.__storeWord(value, location)
 
     def loadString(self, location: int) -> str:
         """
@@ -253,7 +288,7 @@ class DataMemory(Memory):
 
         return word
 
-    def loadWord(self, location=DATA) -> int:
+    def __loadWord(self, location=DATA) -> int:
         """
         Gets the word from that Memory address.
         """
@@ -273,7 +308,7 @@ class DataMemory(Memory):
 
         return word
 
-    def storeWord(self, value: str, location=DATA) -> None:
+    def __storeWord(self, value: str, location=DATA) -> None:
         """
         Stores the word in the proceeding 32 bits / 4 memory location.
         In reality it is stored as 8 hexadecimal digits.
@@ -299,6 +334,10 @@ class DataMemory(Memory):
             fh.writelines(lines)
 
 
+def foo():
+    return True
+
+
 if __name__ == "__main__":
 
     # .data starts from 0x10010000 (DATA)
@@ -306,12 +345,16 @@ if __name__ == "__main__":
     # $gp starts from 0x10008000 (OGGLOBALPOINTER)
     value = "11111111111111111111111111111111"
 
-    obj = DataMemory("LinkedListDataBin")
+    obj = DataMemory(foo, foo, "LinkedListDataBin")
     x = 4
     print(obj.loadWord(DATA + x))
     obj.storeWord(value, DATA + x)
     print(obj.loadWord(DATA + x))
     print(obj.loadString(DATA + 70))
+
+    obj = InstructionMemory(foo, "LinkedListTextBin")
+    x = 6
+    print(obj.loadWord(TEXT + x*4))
 
     obj = Stack("LinkedListStackBin")
     x = 8
