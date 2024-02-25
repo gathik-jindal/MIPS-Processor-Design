@@ -95,6 +95,7 @@ class Processor():
         '''
             Method for connecting the input ports of RegDstMux.
         '''
+
         self.RegDstMux.connectData(0, self.splitter.getRT)
         self.RegDstMux.connectData(1, self.splitter.getRD)
         self.RegDstMux.connectData(2, lambda: 31)
@@ -103,6 +104,7 @@ class Processor():
         '''
             Method for connecting the input ports of ALUSrcMux.
         '''
+
         self.ALUSrcMux.connectData(0, self.RegisterFile.read(1))
         self.ALUSrcMux.connectData(1, self.__signExtend)
 
@@ -113,14 +115,14 @@ class Processor():
 
         self.WriteBackMux.connectData(0, self.ALU.getOutput)
         self.WriteBackMux.connectData(1, self.ReadData)
-        self.WriteBackMux.connectData(2, self.PCadder)     #For now, we need to rewrite after we make the PC adder...
+        self.WriteBackMux.connectData(2, self.PCadder)
 
     def connectBranchSelectMux(self):
         '''
             Method for connecting the input ports of BranchSelectMux.
         '''
 
-        self.BranchSelectMux.connectData(0, self.ALU.getFlag)                      #Need to change these...
+        self.BranchSelectMux.connectData(0, self.ALU.getFlag)
         self.BranchSelectMux.connectData(1, self.notZero)
     
     def connectPCSelectMux(self):
