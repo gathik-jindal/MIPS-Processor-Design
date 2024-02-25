@@ -179,7 +179,7 @@ class InstructionMemory(Memory):
 
     def loadWord(self, location: int) -> str:
         if (self.__readControl() == 0):
-            print("Error: readControl for instruction memory is 0, cannot read!")
+            print("Read Enable for instruction memory is 0, cannot read!")
             return ""
         return self.__loadWord(location)
 
@@ -229,13 +229,13 @@ class DataMemory(Memory):
 
     def loadWord(self, location: int) -> str:
         if (self.__readControl() == 0):
-            print("Error: readControl is 0, cannot read word from DataMemory.")
+            print("Read Enable is 0, cannot read word from DataMemory.")
             return ""
         return self.__loadWord(location)
 
     def storeWord(self, value, location: int) -> str:
         if (self.__writeControl() == 0):
-            print("Error: writeControl is 0, cannot write word to DataMemory.")
+            print("Write Enable is 0, cannot write word to DataMemory.")
             return ""
         self.__storeWord(value, location)
 
