@@ -27,7 +27,7 @@ class Processor():
         self.Controller = Control()
 
         self.InstructionMemory = InstructionMemory(input("Enter instruction file name (Has to be in memory folder): "))
-        self.DataMemory = DataMemory(input("Enter instruction file name (Has to be in memory folder): "))
+        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, input("Enter instruction file name (Has to be in memory folder): "))
 
         self.splitter = Splitter(InstructionMemory.loadWord())
         
@@ -97,7 +97,7 @@ class Processor():
         '''
         self.RegDstMux.connectData(0, self.splitter.getRT)
         self.RegDstMux.connectData(1, self.splitter.getRD)
-        self.RegDstMux.connectData(2, lambda: 31)               
+        self.RegDstMux.connectData(2, lambda: 31)
 
     def connectALUSrcMux(self):
         '''
@@ -113,36 +113,65 @@ class Processor():
 
         self.WriteBackMux.connectData(0, self.ALU.getOutput)
         self.WriteBackMux.connectData(1, self.ReadData)
-        self.WriteBackMux.connectData(2, lambda: PC+4)     #For now, we need to rewrite after we make the PC adder...
+        self.WriteBackMux.connectData(2, lambda: self.PC+4)     #For now, we need to rewrite after we make the PC adder...
 
     def connectBranchSelectMux(self):
         '''
             Method for connecting the input ports of BranchSelectMux.
         '''
 
-        self.BranchSelectMux.connectData(0, lambda: self.ALU.getOutput(0))                      #Need to find a better implementation...
-        self.BranchSelectMux.connectData(1, lambda: int(not(self.ALU.getOutput(0))))
+        self.BranchSelectMux.connectData(0, self.ALU.getFlag)                      #Need to change these...
+        self.BranchSelectMux.connectData(1, self.notZero)
     
     def connectPCSelectMux(self):
         '''
             Method for connecting the input ports of BranchSelectMux.
         '''
-        pass
+        self.PCSelectMux.connectData(0, self.PCadder)
+        self.PCSelectMux.connectData(1, self.BranchAdder)
+        self.PCSelectMux.connectData(2, self.JumpshiftLeft2)
+        self.PCSelectMux.connectData(3, self.RegisterFile.read(0))
 
-    def __signExtend():
-        pass
+    def signExtend(self):
+        return self.splitter.getImm()
+    
+    def notZero(self):
+        '''
+            This method is for the not gate after the Zero flag(for BNE).
+        '''
+        return int(not(self.ALU.getZeroFlag()))
+    
+    def branchGate(self):
+        '''
+            This method is for the AND gate for branch instruction.
+        '''
+        return self.Controller.getBranch() and self.ALU.getFlag()
 
-    def __branchGate():
-        pass
+    def ImmshiftLeft2(self):
+        '''
+            This method implements the Left Shifter(by 2) on Immediate value.
+        '''
+        return self.signExtend()<<2
+    
+    def JumpshiftLeft2(self):
+        '''
+            This method implements the Left Shifter(by 2) on Jump Location field.
+        '''
+        return self.splitter.getJumpLoc()<<2
+    
+    def PCadder(self):
+        '''
+            This method implements the PC adder(by 4) for incrementing PC.
+        '''
+        self.new_PC = self.PC + 4
+        return self.new_PC
 
-    def __shiftLeft():
-        pass
-
-    def __adder():
-        pass
-
+    def BranchAdder(self):
+        '''
+            This method implements the branch adder unit(new PC + Immediate*4).
+        ''' 
+        return self.ImmshiftLeft2()+self.new_PC
 
     def run(mode = 0, untill = None):
-
         pass
 
