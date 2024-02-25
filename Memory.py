@@ -3,10 +3,10 @@ import linecache
 from Utilities import typeCheck, printErrorandExit
 from typing import Callable
 
-DATA = int("10010000", 16)
-OGSTACKPOINTER = int("7fffeffc", 16)
-OGGLOBALPOINTER = int("10008000", 16)
-TEXT = int("00400000", 16)
+DATA = 0x10010000
+STACKPOINTER = 0x7fffeffc
+GLOBALPOINTER = 0x10008000
+TEXT = 0x00400000
 
 
 class Memory(ABC):
@@ -56,7 +56,7 @@ class Global(Memory):
         """
         typeCheck({location: int, value: str})
 
-        location = location - OGGLOBALPOINTER
+        location = location - GLOBALPOINTER
 
         if (location % 4 != 0):
             printErrorandExit(
@@ -90,7 +90,7 @@ class Global(Memory):
 
         typeCheck({location: int})
 
-        location = location - OGGLOBALPOINTER
+        location = location - GLOBALPOINTER
 
         if (location % 4 != 0):
             printErrorandExit(
@@ -98,104 +98,6 @@ class Global(Memory):
 
         location //= 4
         location += 1 + self.__gpWrtToFile
-
-        linecache.checkcache(self._fileName)
-        word = linecache.getline(self._fileName, location).rstrip("\n")
-
-        return word
-
-
-class Stack(Memory):
-    """
-    Handles/Contains strictly the memory handeled by $sp.
-    Note the file provided should be of .TXT format.
-    The fileName can optionally not have the filetype.
-    """
-
-    def __init__(self, fileName="LinkedListStackBin.txt") -> None:
-        super().__init__(fileName)
-
-    def storeWord(self, value: int, location: int) -> None:
-        """
-        Stores the word in the stack.
-        """
-        typeCheck({location: int, value: str})
-
-        location = OGSTACKPOINTER - location
-
-        if (location % 4 != 0):
-            printErrorandExit(
-                f"Error: location ({location}) is not a multiple of 4.")
-
-        location //= 4
-
-        with open(self._fileName, 'r') as fh:
-            lines = fh.readlines()
-
-        if location >= len(lines):
-            for i in range(len(lines), location+1):
-                lines.append('\n')
-
-        lines[location] = value + '\n'
-
-        with open(self._fileName, 'w') as fh:
-            fh.writelines(lines)
-
-    def loadWord(self, location: int) -> str:
-        """
-        Loads the word from the stack.
-        """
-
-        typeCheck({location: int, value: str})
-
-        location = OGSTACKPOINTER - location
-
-        if (location % 4 != 0):
-            printErrorandExit(
-                f"Error: location ({location}) is not a multiple of 4.")
-
-        location //= 4
-        location += 1
-
-        linecache.checkcache(self._fileName)
-        word = linecache.getline(self._fileName, location).rstrip("\n")
-
-        return word
-
-
-class InstructionMemory(Memory):
-    """
-    Handles/Contains strictly the .text part.
-    Only has a loadWord method.
-    Note the file provided should be of .TXT format.
-    The fileName can optionally not have the filetype.
-    """
-
-    def __init__(self, fileName="LinkedListTextBin") -> None:
-        super().__init__(fileName)
-
-    def storeWord(self, value: int, location: int) -> None:
-        """
-        Dummy class, will never be called.
-        """
-
-        printErrorandExit(
-            "Error: storeWord was performed on InstructionMemory!")
-
-    def loadWord(self, location: int) -> str:
-        """
-        Fetches the instruction at memory location <location>.
-        """
-        typeCheck({location: int})
-
-        location = location - TEXT
-
-        if (location % 4 != 0):
-            printErrorandExit(
-                f"Error: location ({location}) is not a multiple of 4.")
-
-        location //= 4
-        location += 1
 
         linecache.checkcache(self._fileName)
         word = linecache.getline(self._fileName, location).rstrip("\n")
@@ -325,6 +227,104 @@ class DataMemory(Memory):
             fh.writelines(lines)
 
 
+class Stack(Memory):
+    """
+    Handles/Contains strictly the memory handeled by $sp.
+    Note the file provided should be of .TXT format.
+    The fileName can optionally not have the filetype.
+    """
+
+    def __init__(self, fileName="LinkedListStackBin.txt") -> None:
+        super().__init__(fileName)
+
+    def storeWord(self, value: int, location: int) -> None:
+        """
+        Stores the word in the stack.
+        """
+        typeCheck({location: int, value: str})
+
+        location = STACKPOINTER - location
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+
+        with open(self._fileName, 'r') as fh:
+            lines = fh.readlines()
+
+        if location >= len(lines):
+            for i in range(len(lines), location+1):
+                lines.append('\n')
+
+        lines[location] = value + '\n'
+
+        with open(self._fileName, 'w') as fh:
+            fh.writelines(lines)
+
+    def loadWord(self, location: int) -> str:
+        """
+        Loads the word from the stack.
+        """
+
+        typeCheck({location: int, value: str})
+
+        location = STACKPOINTER - location
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+        location += 1
+
+        linecache.checkcache(self._fileName)
+        word = linecache.getline(self._fileName, location).rstrip("\n")
+
+        return word
+
+
+class InstructionMemory(Memory):
+    """
+    Handles/Contains strictly the .text part.
+    Only has a loadWord method.
+    Note the file provided should be of .TXT format.
+    The fileName can optionally not have the filetype.
+    """
+
+    def __init__(self, fileName="LinkedListTextBin") -> None:
+        super().__init__(fileName)
+
+    def storeWord(self, value: int, location: int) -> None:
+        """
+        Dummy class, will never be called.
+        """
+
+        printErrorandExit(
+            "Error: storeWord was performed on InstructionMemory!")
+
+    def loadWord(self, location: int) -> str:
+        """
+        Fetches the instruction at memory location <location>.
+        """
+        typeCheck({location: int})
+
+        location = location - TEXT
+
+        if (location % 4 != 0):
+            printErrorandExit(
+                f"Error: location ({location}) is not a multiple of 4.")
+
+        location //= 4
+        location += 1
+
+        linecache.checkcache(self._fileName)
+        word = linecache.getline(self._fileName, location).rstrip("\n")
+
+        return word
+
+
 def foo():
     return True
 
@@ -332,8 +332,8 @@ def foo():
 if __name__ == "__main__":
 
     # .data starts from 0x10010000 (DATA)
-    # $sp starts from 0x7fffeffc (OGSTACKPOINTER)
-    # $gp starts from 0x10008000 (OGGLOBALPOINTER)
+    # $sp starts from 0x7fffeffc (STACKPOINTER)
+    # $gp starts from 0x10008000 (GLOBALPOINTER)
     value = "11111111111111111111111111111111"
 
     obj = DataMemory(foo, foo, "LinkedListDataBin")
@@ -349,13 +349,13 @@ if __name__ == "__main__":
 
     obj = Stack("LinkedListStackBin")
     x = 8
-    obj.storeWord(value, OGSTACKPOINTER - x)
-    print(obj.loadWord(OGSTACKPOINTER - x))
+    obj.storeWord(value, STACKPOINTER - x)
+    print(obj.loadWord(STACKPOINTER - x))
 
     obj = Global("LinkedListHeapBin")
     x = 8
-    obj.storeWord(value, OGGLOBALPOINTER - x)
-    print(obj.loadWord(OGGLOBALPOINTER - x))
+    obj.storeWord(value, GLOBALPOINTER - x)
+    print(obj.loadWord(GLOBALPOINTER - x))
     x = -8
-    obj.storeWord(value, OGGLOBALPOINTER - x)
-    print(obj.loadWord(OGGLOBALPOINTER - x))
+    obj.storeWord(value, GLOBALPOINTER - x)
+    print(obj.loadWord(GLOBALPOINTER - x))
