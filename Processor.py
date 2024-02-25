@@ -113,7 +113,7 @@ class Processor():
 
         self.WriteBackMux.connectData(0, self.ALU.getOutput)
         self.WriteBackMux.connectData(1, self.ReadData)
-        self.WriteBackMux.connectData(2, lambda: self.PC+4)     #For now, we need to rewrite after we make the PC adder...
+        self.WriteBackMux.connectData(2, self.PCadder)     #For now, we need to rewrite after we make the PC adder...
 
     def connectBranchSelectMux(self):
         '''
