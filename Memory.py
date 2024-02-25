@@ -171,17 +171,8 @@ class InstructionMemory(Memory):
     The fileName can optionally not have the filetype.
     """
 
-    def __init__(self, readControl: Callable, fileName="LinkedListTextBin") -> None:
+    def __init__(self, fileName="LinkedListTextBin") -> None:
         super().__init__(fileName)
-
-        typeCheck({readControl: Callable})
-        self.__readControl = readControl
-
-    def loadWord(self, location: int) -> str:
-        if (self.__readControl() == 0):
-            print("Read Enable for instruction memory is 0, cannot read!")
-            return ""
-        return self.__loadWord(location)
 
     def storeWord(self, value: int, location: int) -> None:
         """
@@ -191,7 +182,7 @@ class InstructionMemory(Memory):
         printErrorandExit(
             "Error: storeWord was performed on InstructionMemory!")
 
-    def __loadWord(self, location: int) -> str:
+    def loadWord(self, location: int) -> str:
         """
         Fetches the instruction at memory location <location>.
         """
@@ -352,7 +343,7 @@ if __name__ == "__main__":
     print(obj.loadWord(DATA + x))
     print(obj.loadString(DATA + 70))
 
-    obj = InstructionMemory(foo, "LinkedListTextBin")
+    obj = InstructionMemory("LinkedListTextBin")
     x = 6
     print(obj.loadWord(TEXT + x*4))
 
