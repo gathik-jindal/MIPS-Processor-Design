@@ -31,10 +31,10 @@ class Processor():
         self.InstructionMemory = InstructionMemory(input("Enter instruction file name (Has to be in memory folder): "))
         self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, input("Enter instruction file name (Has to be in memory folder): "))
 
-        self.splitter = Splitter(InstructionMemory.loadWord())
+        self.splitter = Splitter(self.__FetchData)
         
         self.ALUController = ALUControl(self.Controller.getALUOp, self.Controller.setpcSelect)
-        self.ALU = ALU()
+        self.ALU = ALU(control= self.getACUop)
         self.__connectALU()
         #### more ALU connections
         
@@ -60,7 +60,8 @@ class Processor():
         #Creating Data path
 
     
-
+    def __FetchData(self):
+        return self.InstructionMemory.loadWord(self.PC.getVal())
 
     def __connectRegFile(self):
         '''
@@ -192,24 +193,35 @@ class Processor():
         ''' 
         return self.ImmshiftLeft2()+self.new_PC
 
-    def run(mode = 0, untill = 1000000000):
+    def run(self, mode = 0, untill = 1000000000):
         """
             This runs the processor.
         """
         self.__clock = 0
 
         if (mode == 0):
-            while(self.__clock < untill && self.__status != Status.EXIT):
+            while(self.__clock < untill and self.__status != Status.EXIT):
                 self.__clock += 1
                 print(f"Starting clock cycle {self.__clock}")
+                
+                #Instruction Fetch
+                self.RunMCU()
+                self.__status = self.ALU.run()
+                self.WriteData()
+                self.ReadData()
+                self.RegisterFile.write()
+                self.PC.writeVal(self.PCSelectMux.getData())
+
+
+
+
             else:
                 if(self)
 
         elif (mode == 1):
-            while(self.__clock < untill && self.__status != Status.EXIT)
+            while(self.__clock < untill and self.__status != Status.EXIT)
                 self.__clock += 1
                 print(f"Starting clock cycle {self.__clock}")
 
         else:
             print("Invalid mode for running the Processor")
-
