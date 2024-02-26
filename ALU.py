@@ -123,13 +123,13 @@ class ALU():
 
     """
 
-    pass
+    return Status.DIV
 
   def __mul(self):
     """
     """
 
-    pass
+    return Status.MUL
 
   def __ret(self):
     """
@@ -150,7 +150,7 @@ class ALU():
     """
         This method handles all the syscall, mfho, mfli instructions.
     """
-    return Status.MAG
+    return Status.MAGIC
 
 
   def setInputConnection(self, portID: int, portConnection:Callable):
