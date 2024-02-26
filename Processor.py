@@ -61,7 +61,7 @@ class Processor():
         self.RegisterFile.connectReadPort(0, self.splitter.getRS)
         self.RegisterFile.connectReadPort(1, self.splitter.getRT)
         
-        self.RegisterFile.connectWritePort(0, self.RegDstMux.getData)
+        self.RegisterFile.connectWritePort(0, self.RegDstMux.getData, self.WriteBackMux.getData)
 
     def getACUop(self):
         '''
@@ -106,7 +106,7 @@ class Processor():
         '''
 
         self.ALUSrcMux.connectData(0, self.RegisterFile.read(1))
-        self.ALUSrcMux.connectData(1, self.__signExtend)
+        self.ALUSrcMux.connectData(1, self.splitter.getImm)
 
     def connectWriteBackMux(self):
         '''
@@ -165,7 +165,7 @@ class Processor():
         '''
             This method implements the PC adder(by 4) for incrementing PC.
         '''
-        self.new_PC = self.PC + 4
+        self.new_PC = self.PC.getVal() + 4
         return self.new_PC
 
     def BranchAdder(self):
