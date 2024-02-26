@@ -116,7 +116,7 @@ class Processor():
             Method for connecting the input ports of BranchSelectMux.
         '''
 
-        self.BranchSelectMux.connectData(0, self.ALU.getFlag)
+        self.BranchSelectMux.connectData(0, self.ALU.getZeroFlag)
         self.BranchSelectMux.connectData(1, self.notZero)
     
     def __connectPCSelectMux(self):
