@@ -328,6 +328,17 @@ class Data(Memory):
         Location and value should be of type integer.
         """
 
+        if (type(0) == type(value)):
+            val = value
+            i = 0
+            ans = ""
+            while (i < 32):
+                i += 1
+                ans = ans + str(val % 2)
+                val = val >> 1
+
+        value = ans[::-1]
+
         typeCheck({value: str, location: int})
 
         location = location - DATA
@@ -361,6 +372,17 @@ class Stack(Memory):
         """
         Stores the word in the stack.
         """
+        if (type(0) == type(value)):
+            val = value
+            i = 0
+            ans = ""
+            while (i < 32):
+                i += 1
+                ans = ans + str(val % 2)
+                val = val >> 1
+
+        value = ans[::-1]
+        
         typeCheck({location: int, value: str})
 
         location = STACKPOINTER - location
