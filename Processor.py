@@ -155,7 +155,7 @@ class Processor():
             Method for writing to the Memory.
         '''
         self.DataMemory.storeWord(
-            self.ALU.getOutput(), self.RegisterFile.read(1)())
+            location=self.ALU.getOutput(), value=self.RegisterFile.read(1)())
 
     def signExtend(self):
         return self.splitter.getImm()
@@ -365,4 +365,4 @@ class Processor():
 if __name__ == "__main__":
 
     P = Processor()
-    P.run(1)
+    P.run()

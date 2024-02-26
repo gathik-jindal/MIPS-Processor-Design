@@ -141,7 +141,7 @@ class Global(Memory):
                 ans = ans + str(val % 2)
                 val = val >> 1
 
-        value = ans
+        value = ans[::-1]
 
         typeCheck({location: int, value: str})
 
