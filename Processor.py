@@ -33,17 +33,29 @@ class Processor():
         
         self.ALUController = ALUControl(self.Controller.getALUOp, self.Controller.setpcSelect)
         self.ALU = ALU()
+        self.__connectALU()
         #### more ALU connections
         
         self.RegisterFile = RegSet(readPortCount = 2, writePortCount = 1, count = 32, size = 32, defaultVal = 0)
         self.RegisterFile.writeEnable(self.Controller.getRegWrite)
         self.RegisterFile.readEnable(self.Controller.getRegRead)
+        self.__connectRegFile()
 
         self.RegDstMux = Multiplexer(3, self.Controller.getRegDst)
+        self.__connectRegDstMux()
+
         self.ALUSrcMux = Multiplexer(2, self.Controller.getALUSrc)
+        self.__connectALUSrcMux()
+
         self.WriteBackMux = Multiplexer(3, self.Controller.getWB)
+        self.__connectWriteBackMux()
+        
         self.BranchSelectMux = Multiplexer(2, self.Controller.getBranchSelect)
+        self.__connectBranchSelectMux()
+        
         self.PCSelectMux = Multiplexer(4, self.Controller.getpcSelect)
+        self.__connectPCSelectMux()
+
 
         #Creating Data path
 
@@ -54,7 +66,7 @@ class Processor():
         '''
         self.Controller.run(opcode = self.splitter.getOpcode())
 
-    def connectRegFile(self):
+    def __connectRegFile(self):
         '''
             Method for connecting all the ports of the Register file.
         '''
@@ -69,7 +81,7 @@ class Processor():
         '''
         return self.ALUController.getOperation(funct= self.splitter.getFunct())
 
-    def connectALU(self):
+    def __connectALU(self):
         '''
             Method for connecting all the input ports to the ALU.
         '''
@@ -91,7 +103,7 @@ class Processor():
         '''
         DataMemory.storeWord(self.RegisterFile.read(1)())
 
-    def connectRegDstMux(self):
+    def __connectRegDstMux(self):
         '''
             Method for connecting the input ports of RegDstMux.
         '''
@@ -100,7 +112,7 @@ class Processor():
         self.RegDstMux.connectData(1, self.splitter.getRD)
         self.RegDstMux.connectData(2, lambda: 31)
 
-    def connectALUSrcMux(self):
+    def __connectALUSrcMux(self):
         '''
             Method for connecting the input ports of ALUSrcMux.
         '''
@@ -108,7 +120,7 @@ class Processor():
         self.ALUSrcMux.connectData(0, self.RegisterFile.read(1))
         self.ALUSrcMux.connectData(1, self.splitter.getImm)
 
-    def connectWriteBackMux(self):
+    def __connectWriteBackMux(self):
         '''
             Method for connecting the input ports of WriteBackMux.
         '''
@@ -117,7 +129,7 @@ class Processor():
         self.WriteBackMux.connectData(1, self.ReadData)
         self.WriteBackMux.connectData(2, self.PCadder)
 
-    def connectBranchSelectMux(self):
+    def __connectBranchSelectMux(self):
         '''
             Method for connecting the input ports of BranchSelectMux.
         '''
@@ -125,7 +137,7 @@ class Processor():
         self.BranchSelectMux.connectData(0, self.ALU.getFlag)
         self.BranchSelectMux.connectData(1, self.notZero)
     
-    def connectPCSelectMux(self):
+    def __connectPCSelectMux(self):
         '''
             Method for connecting the input ports of BranchSelectMux.
         '''
