@@ -24,7 +24,7 @@ class ALU():
     self.__inpPorts = [ self._ground for i in range(self.__iPC)]        #Index 0: RD1; Index 1: ALUSrcMux; Index 2: shamt
     self.__outPorts = [ self._ground() for i in range(self.__oPC)]        #Index 0: Zero Flag; Index 1: ALUresult
 
-    self.__operations = {
+    self.__operation = {
             Operation.NOP           :           self.__nop,
             Operation.ADD           :           self.__add,
             Operation.SLL           :           self.__sll,
