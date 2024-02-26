@@ -37,7 +37,9 @@ class ALU():
             Operation.DIV           :           self.__div,
             Operation.MUL           :           self.__mul,
             Operation.RET           :           self.__ret,
-            Operation.MAG           :           self.__mag
+            Operation.MAG1          :           self.__mag1,
+            Operation.MAG2          :           self.__mag2,
+            Operation.MAG3          :           self.__mag3
     }
 
   def _ground(self):
@@ -142,15 +144,27 @@ class ALU():
     '''
         Special operation to right shift immediate value by 16
     '''
-    self.__outPorts[1] = self.__inpPorts[1]() << 16
+    self.__outPorts[1] = self.__inpPorts[1] << 16
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
     return Status.CONTINUE
 
-  def __mag(self):
+  def __mag1(self):
     """
-        This method handles all the syscall, mfho, mfli instructions.
+        This method handles all the syscall instructions.
     """
-    return Status.MAGIC
+    return Status.MAGIC1
+  
+  def __mag2(self):
+    """
+        This method handles all the mfhi instructions.
+    """
+    return Status.MAGIC2
+  
+  def __mag3(self):
+    """
+        This method handles all the mflo instructions.
+    """
+    return Status.MAGIC3
 
 
   def setInputConnection(self, portID: int, portConnection:Callable):
