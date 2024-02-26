@@ -23,9 +23,11 @@ class Opcode(Enum):
 class Status(Enum):
     EXIT = 0
     CONTINUE = 1
-    MAGIC = 2
+    MAGIC1 = 2
     MUL = 3
     DIV = 4
+    MAGIC2 = 5
+    MAGIC3 = 6
 
 
 class Funct(Enum):
@@ -76,7 +78,9 @@ class Operation(Enum):
     DIV = "01000"
     MUL = "01001"
     RET = "01010"
-    MAG = "01111"
+    MAG1 = "01111"
+    MAG2 = "10001"
+    MAG3 = "10010"
     LUI = "10000"
 
 
