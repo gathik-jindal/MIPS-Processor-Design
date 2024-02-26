@@ -22,6 +22,8 @@ class Processor():
         """
 
         #Creating the objects and setting up the data path
+
+        self.__status = Status.CONTINUE
         
         self.PC = Register(32, 0x400000)
         self.Controller = Control()
@@ -190,6 +192,24 @@ class Processor():
         ''' 
         return self.ImmshiftLeft2()+self.new_PC
 
-    def run(mode = 0, untill = None):
-        pass
+    def run(mode = 0, untill = 1000000000):
+        """
+            This runs the processor.
+        """
+        self.__clock = 0
+
+        if (mode == 0):
+            while(self.__clock < untill && self.__status != Status.EXIT):
+                self.__clock += 1
+                print(f"Starting clock cycle {self.__clock}")
+            else:
+                if(self)
+
+        elif (mode == 1):
+            while(self.__clock < untill && self.__status != Status.EXIT)
+                self.__clock += 1
+                print(f"Starting clock cycle {self.__clock}")
+
+        else:
+            print("Invalid mode for running the Processor")
 
