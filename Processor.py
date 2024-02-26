@@ -216,7 +216,8 @@ class Processor():
 
 
             else:
-                if(self)
+                if(self):
+                    pass
 
         elif (mode == 1):
             while(self.__clock < untill and self.__status != Status.EXIT)
