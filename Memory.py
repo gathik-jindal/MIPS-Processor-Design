@@ -163,6 +163,23 @@ class Global(Memory):
 
         return word
 
+    def malloc(self, bytes: int) -> int:
+        """
+        Used for mallocing space in the heap, returns the address.
+        For now bytes have to be a multiple of 4.
+        """
+
+        if (bytes % 4 != 0):
+            printErrorandExit(
+                "Number of bytes for malloc is not a multiple of 4.")
+
+        bytes //= 4
+
+        with open(self._fileName, 'r') as fh:
+            lines = len(fh.readlines())
+
+        return lines + GLOBALPOINTER - self.__gpWrtToFile
+
 
 class Data(Memory):
     """
@@ -422,6 +439,9 @@ if __name__ == "__main__":
 
     # global
     x = 8
+    obj.storeWord(value, GLOBALPOINTER - x)
+    print(obj.loadWord(GLOBALPOINTER - x))
+    x = 0
     obj.storeWord(value, GLOBALPOINTER - x)
     print(obj.loadWord(GLOBALPOINTER - x))
     x = -8
