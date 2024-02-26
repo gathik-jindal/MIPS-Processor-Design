@@ -49,10 +49,8 @@ class Processor():
 
         self.WriteBackMux = Multiplexer(3, self.Controller.getWB)
         self.__connectWriteBackMux()
-        
         self.BranchSelectMux = Multiplexer(2, self.Controller.getBranchSelect)
         self.__connectBranchSelectMux()
-        
         self.PCSelectMux = Multiplexer(4, self.Controller.getpcSelect)
         self.__connectPCSelectMux()
 
@@ -60,11 +58,7 @@ class Processor():
         #Creating Data path
 
     
-    def RunMCU(self):
-        '''
-            Runs the Main Control Unit.
-        '''
-        self.Controller.run(opcode = self.splitter.getOpcode())
+
 
     def __connectRegFile(self):
         '''
@@ -75,11 +69,7 @@ class Processor():
         
         self.RegisterFile.connectWritePort(0, self.RegDstMux.getData, self.WriteBackMux.getData)
 
-    def getACUop(self):
-        '''
-            Method for retrieving the operation code from ALU Control Unit.
-        '''
-        return self.ALUController.getOperation(funct= self.splitter.getFunct())
+
 
     def __connectALU(self):
         '''
@@ -90,18 +80,7 @@ class Processor():
         self.ALU.setInputConnection(1, self.ALUSrcMux.getData)
         self.ALU.setInputConnection(2, self.splitter.getShamt)
 
-    def ReadData(self):
-        '''
-            Method for retrieving data from Data Memory.
-        '''
 
-        return DataMemory.loadWord(self.ALU.getOutput())
-    
-    def WriteData(self):
-        '''
-            Method for writing to the Memory.
-        '''
-        DataMemory.storeWord(self.RegisterFile.read(1)())
 
     def __connectRegDstMux(self):
         '''
@@ -145,6 +124,31 @@ class Processor():
         self.PCSelectMux.connectData(1, self.BranchAdder)
         self.PCSelectMux.connectData(2, self.JumpshiftLeft2)
         self.PCSelectMux.connectData(3, self.RegisterFile.read(0))
+
+    def RunMCU(self):
+        '''
+            Runs the Main Control Unit.
+        '''
+        self.Controller.run(opcode = self.splitter.getOpcode())
+
+    def getACUop(self):
+        '''
+            Method for retrieving the operation code from ALU Control Unit.
+        '''
+        return self.ALUController.getOperation(funct= self.splitter.getFunct())
+    
+    def ReadData(self):
+        '''
+            Method for retrieving data from Data Memory.
+        '''
+
+        return DataMemory.loadWord(self.ALU.getOutput())
+    
+    def WriteData(self):
+        '''
+            Method for writing to the Memory.
+        '''
+        DataMemory.storeWord(self.RegisterFile.read(1)())
 
     def signExtend(self):
         return self.splitter.getImm()
