@@ -142,7 +142,7 @@ class ALU():
     '''
         Special operation to right shift immediate value by 16
     '''
-    self.__outPorts[1] = self.__inpPorts[1] << 16
+    self.__outPorts[1] = self.__inpPorts[1]() << 16
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
     return Status.CONTINUE
 

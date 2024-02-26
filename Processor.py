@@ -160,7 +160,7 @@ class Processor():
             Method for retrieving data from Data Memory.
         '''
 
-        return DataMemory.loadWord(self.ALU.getOutput())
+        return self.DataMemory.loadWord(self.ALU.getOutput())
 
     
     
@@ -168,7 +168,7 @@ class Processor():
         '''
             Method for writing to the Memory.
         '''
-        DataMemory.storeWord(self.RegisterFile.read(1)())
+        self.DataMemory.storeWord(self.ALU.getOutput(), self.RegisterFile.read(1)())
 
         
 

@@ -63,6 +63,9 @@ class DataMemory(Memory):
         self.__fileNameData = fileNameData
         self.__fileNameStack = fileNameStack
 
+        self.__readControl = readControl
+        self.__writeControl = writeControl
+
         self.__dataMem = Data(readControl, writeControl, self.__fileNameData)
         self.__global = Global(self.__fileNameGlobal)
         self.__stack = Stack(self.__fileNameStack)
@@ -71,25 +74,33 @@ class DataMemory(Memory):
         """
         Loads the word into that memory location.
         """
-        if (location < DATA):
-            return self.__global.loadWord(location)
-        else:
-            if (STACKPOINTER - location < MAXSTACKSIZE):
-                return self.__stack.loadWord(location)
+
+        if (self.__readControl() == 1):
+            if (location < DATA):
+                return self.__global.loadWord(location)
             else:
-                return self.__dataMem.loadWord(location)
+                if (STACKPOINTER - location < MAXSTACKSIZE):
+                    return self.__stack.loadWord(location)
+                else:
+                    return self.__dataMem.loadWord(location)
+
+        return "0"
 
     def storeWord(self, value: str, location: int) -> None:
         """
         Store the word at that memory location.
         """
-        if (location < DATA):
-            return self.__global.storeWord(value, location)
-        else:
-            if (STACKPOINTER - location < MAXSTACKSIZE):
-                return self.__stack.storeWord(value, location)
+
+        if (self.__writeControl() == 1):
+            if (location < DATA):
+                return self.__global.storeWord(value, location)
             else:
-                return self.__dataMem.storeWord(value, location)
+                if (STACKPOINTER - location < MAXSTACKSIZE):
+                    return self.__stack.storeWord(value, location)
+                else:
+                    return self.__dataMem.storeWord(value, location)
+
+        return "0"
 
     def loadString(self, location: int) -> str:
         """
@@ -120,6 +131,18 @@ class Global(Memory):
         """
         Stores the word in the global heap.
         """
+
+        if (type(0) == type(value)):
+            val = value
+            i = 0
+            ans = ""
+            while (i < 32):
+                i += 1
+                ans = ans + str(val % 2)
+                val = val >> 1
+
+        value = ans
+
         typeCheck({location: int, value: str})
 
         location = location - GLOBALPOINTER
