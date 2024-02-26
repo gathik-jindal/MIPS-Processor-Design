@@ -11,7 +11,7 @@ class Control():
     def __init__(self):
 
         self.__decode = {
-            # RegDst, Branch, MemRead, MemWrite, WB, ALUOP, ALUSRC, RegWrite, RegRead, BranchSelect, pcSelect
+            
            Opcode.ADDI.value      : [0, 0, 0, 0, 0, ALUOp.ADDI, 1, 1, 1, 0, 0],    # Change these control signals
            Opcode.ADDIU.value     : [0, 0, 0, 0, 0, ALUOp.ADDIU, 1, 1, 1, 0, 0],
            Opcode.BEQ.value       : [0, 1, 0, 0, 0, ALUOp.BEQ, 0, 0, 1, 0, 1],
@@ -23,7 +23,7 @@ class Control():
            Opcode.SW.value        : [0, 0, 0, 1, 0, ALUOp.ADDI, 1, 0, 1, 0, 0],
            Opcode.R_FORMAT.value  : [1, 0, 0, 0, 0, ALUOp.R_FORMAT, 0, 1, 1, 0, 0],
            Opcode.J.value         : [0, 0, 0, 0, 0, ALUOp.J, 0, 0, 0, 0, 2],
-           Opcode.JAL.value       : [2, 0, 0, 0, 2, ALUOp.JAL, 0, 1, 0, 0, 2],
+           Opcode.JAL.value       : [3, 0, 0, 0, 2, ALUOp.JAL, 0, 1, 0, 0, 2],
            Opcode.MUL.value       : [1, 0, 0, 0, 0, ALUOp.MUL, 0, 1, 1, 0, 0 ]
 
            }
@@ -31,14 +31,14 @@ class Control():
         self.__state = [0,0,0,0,0,0,0,0,0,0,0]
         
 
-    def run(self, opcode):
+    def run(self, opcode, enable = 1):
 
         """
             Runs the processor commands and generates the correct control signals.
         """
            
         self.__state = self.__decode[opcode]
-        self.dump(opcode)
+        self.dump(opcode, enable)
         
 
     def getRegDest(self):
@@ -138,24 +138,24 @@ class Control():
         self.__state[10] = val
         self.__state[7] = 0
 
-    def dump(self, opcode):
+    def dump(self, opcode, enable = 1):
 
         """
             Prints the current control signals.
         """
-        
-        print(f"The control signals generated for Instruction '{Opcode(opcode).name} ({opcode})' are:\n\
-            RegDest Mux: {self.__state[0]}\n\
-            Branch Signal: {self.__state[1]}\n\
-            MemRead Signal: {self.__state[2]}\n\
-            MemWrite Signal: {self.__state[3]}\n\
-            WB Mux: {self.__state[4]}\n\
-            ALUOp Signal: {self.__state[5]}\n\
-            ALUSrc Mux: {self.__state[6]}\n\
-            RegWrite Signal: {self.__state[7]}\n\
-            RegRead Signal: {self.__state[8]}\n\
-            BranchSelect Mux: {self.__state[9]}\n\
-            pcSelect Mux: {self.__state[10]}\n")
+        if enable:
+            print(f"The control signals generated for Instruction '{Opcode(opcode).name} ({opcode})' are:\n\
+                RegDest Mux: {self.__state[0]}\n\
+                Branch Signal: {self.__state[1]}\n\
+                MemRead Signal: {self.__state[2]}\n\
+                MemWrite Signal: {self.__state[3]}\n\
+                WB Mux: {self.__state[4]}\n\
+                ALUOp Signal: {self.__state[5]}\n\
+                ALUSrc Mux: {self.__state[6]}\n\
+                RegWrite Signal: {self.__state[7]}\n\
+                RegRead Signal: {self.__state[8]}\n\
+                BranchSelect Mux: {self.__state[9]}\n\
+                pcSelect Mux: {self.__state[10]}\n")
 
 
 
