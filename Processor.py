@@ -7,6 +7,7 @@ from RegSet import *
 from Register import *
 from Utilities import *
 from Splitter import *
+import time
 
 
 class Processor():
@@ -26,6 +27,9 @@ class Processor():
         self.__status = Status.CONTINUE
         
         self.PC = Register(32, 0x400000)
+        self.HI = Register(32)
+        self.LO = Register(32)
+        
         self.Controller = Control()
         self.Controller.run(opcode = "000000", enable = 0)
 
@@ -232,13 +236,122 @@ class Processor():
         #Instruction Fetch
         self.RunMCU()
         self.__status = self.ALU.run()
-        self.WriteData()
-        self.ReadData()
-        self.RegisterFile.write()
+        
+        if (self.__status == Status.CONTINUE):
+            self.WriteData()
+            self.ReadData()
+            self.RegisterFile.write()
+
+        elif (self.__status == Status.EXIT):
+            return
+        
+        elif (self.__status == Status.MUL):
+            
+            a = self.RegisterFile.read(0)()               
+            b = self.RegisterFile.read(1)()
+
+            val = a*b
+            i = 0
+            ans = ""
+            while(i < 32):
+                i += 1
+                ans = ans + str(val%2)
+                val = val >> 1                
+            ans = int(ans[::-1],2)
+            print(ans)
+            self.RegisterFile.hardcode(Splitter.getRD(),ans)
+            self.LO.writeVal(ans)
+            
+            i = 0
+            ans = ""
+            while(i < 32):
+                i += 1
+                ans = ans + str(val%2)
+                val = val >> 1
+            ans = int(ans[::-1],2)
+            print(ans)
+            self.HI.writeVal(ans)            
+            
+        elif (self.__status == Status.DIV):
+
+            a = self.RegisterFile.read(0)()               
+            b = self.RegisterFile.read(1)()
+
+            val = a//b
+            rem = a%b
+
+            i = 0
+            ans = ""
+            while(i < 32):
+                i += 1
+                ans = ans + str(val%2)
+                val = val >> 1
+            val = int(ans[::-1],2)
+
+            i = 0
+            ans = ""
+            while(i < 32):
+                i += 1
+                ans = ans + str(rem%2)
+                rem = rem >> 1
+            rem = int(ans[::-1],2)
+            
+            
+            self.HI.writeVal(rem)
+            self.LO.writeVal(val)
+            
+        else:
+            self.magic()
+            
         self.PC.writeVal(self.PCSelectMux.getData())
 
             
+    def magic(self):
+        print(self.__status)
+        if (self.__status.value == Status.MAGIC2.value):
+            self.RegisterFile.hardcode(Splitter.getRD(), self.HI.readVal())
+            
+        elif (self.__status == Status.MAGIC3):
+            self.RegisterFile.hardcode(Splitter.getRD(), self.LO.readVal())
         
+        elif (self.__status == Status.MAGIC1):
+            code = self.RegisterFile._regset[2].readVal()
+            if code == 1:
+                print(self.RegisterFile._regset[4].readVal())
+                
+            elif code == 4:
+                address = self.RegisterFile._regset[4].readVal()
+                string = self.DataMemory.loadString(address)
+                print(string)
+
+            elif code == 9:
+                addr = malloc(n)
+                self.RegisterFile._regset[2].writeVal(addr)
+                
+            elif code == 10:
+                self.__status = Status.EXIT
+
+            elif code == 5:
+                val = int(input())
+                self.RegisterFile._regset[2].writeVal(val)                
+
+            elif code == 30:
+                val = time.time() * 1000000
+                val = val//1
+                i = 0
+                ans = ""
+                while(i < 31):
+                    i += 1
+                    ans = ans + str(val%2)
+                    val = val >> 1
+                val = int(ans[::-1],2)
+                self.RegisterFile._regset[4].writeVal(val)
+                
+            else:
+                printErrorandExit("Unsupported syscall")                
+                
+        else:
+            printErrorandExit("Error status")
 
     def run(self, mode = 0, untill = 1000000000):
         """
