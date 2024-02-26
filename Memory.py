@@ -211,23 +211,23 @@ class Data(Memory):
         self.__readControl = readControl
         self.__writeControl = writeControl
 
-    def loadWord(self, location: int) -> str:
+    def loadWord(self, location=None) -> str:
         """
         Loads the 32 bit word from the address
         """
         if (self.__readControl() == 0):
             print("Read Enable is 0, cannot read word from DataMemory.")
-            return ""
+            return "0"
         return self.__loadWord(location)
 
-    def storeWord(self, value: str, location: int) -> str:
+    def storeWord(self, value=None, location=None) -> str:
         """
         Stores the word in the proceeding 32 bits / 4 memory location.
         Location and value should be of type integer.
         """
         if (self.__writeControl() == 0):
             print("Write Enable is 0, cannot write word to DataMemory.")
-            return ""
+            return "0"
         self.__storeWord(value, location)
 
     def loadString(self, location: int) -> str:
