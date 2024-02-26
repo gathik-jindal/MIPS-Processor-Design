@@ -220,7 +220,7 @@ class Processor():
                     pass
 
         elif (mode == 1):
-            while(self.__clock < untill and self.__status != Status.EXIT)
+            while(self.__clock < untill and self.__status != Status.EXIT):
                 self.__clock += 1
                 print(f"Starting clock cycle {self.__clock}")
 
