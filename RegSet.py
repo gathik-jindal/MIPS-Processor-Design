@@ -30,6 +30,11 @@ class RegSet():
         self.__re = self._ground
         
 
+    def hardcode(self, num, val):
+
+        self._regset[num].writeVal(val)
+        
+    
     def _ground(self):
 
         """
