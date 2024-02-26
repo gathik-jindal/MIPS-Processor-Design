@@ -46,9 +46,9 @@ class ALUControl:
                    Funct.SLTU      :        Operation.COMP,
                    Funct.JR        :        Operation.NOP,
                    Funct.BREAK     :        Operation.RET,
-                   Funct.SYSCALL   :        Operation.MAG,
-                   Funct.MFHI      :        Operation.MAG,
-                   Funct.MFLO      :        Operation.MAG,
+                   Funct.SYSCALL   :        Operation.MAG1,
+                   Funct.MFHI      :        Operation.MAG2,
+                   Funct.MFLO      :        Operation.MAG3,
                    Funct.DIV       :        Operation.DIV,
                    Funct.DEF       :        Operation.NOP
                    }
