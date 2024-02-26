@@ -178,6 +178,13 @@ class Global(Memory):
         with open(self._fileName, 'r') as fh:
             lines = len(fh.readlines())
 
+        while (bytes > 0):
+            lines.append('\n')
+            bytes -= 1
+
+        with open(self._fileName, 'w') as fh:
+            fh.writelines(lines)
+
         return lines + GLOBALPOINTER - self.__gpWrtToFile
 
 
