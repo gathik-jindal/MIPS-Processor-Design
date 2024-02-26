@@ -97,6 +97,13 @@ class DataMemory(Memory):
         """
         return self.__dataMem.loadString(location)
 
+    def malloc(self, bytes: int) -> int:
+        """
+        Mallocs some bytes.
+        """
+
+        return self.__global.malloc(bytes)
+
 
 class Global(Memory):
     """
