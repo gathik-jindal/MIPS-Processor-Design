@@ -51,13 +51,13 @@ class ALU():
     """
         This method executes the operation based on the current control value.
     """
-    self.__operation[self.__control()]()
+    return self.__operation[self.__control()]()
 
   def __nop(self):
     """
         This method executes a NOP(does nothing).
     """
-    pass
+    return Status.CONTINUE
 
 
   def __add(self):
@@ -66,6 +66,7 @@ class ALU():
     """
     self.__outPorts[1] = self.__inpPorts[0]()+self.__inpPorts[1]()
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
   def __sll(self):
     """
@@ -74,6 +75,7 @@ class ALU():
 
     self.__outPorts[1] = self.__inpPorts[0]() << self.__inpPorts[2]()
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
   def __sra(self):
     """
@@ -81,6 +83,7 @@ class ALU():
     """
     self.__outPorts[1] = self.__inpPorts[0]() >> self.__inpPorts[2]()
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
   def __sub(self):
     """
@@ -88,6 +91,7 @@ class ALU():
     """
     self.__outPorts[1] = self.__inpPorts[0]()-self.__inpPorts[1]()
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
   def __comp(self):
     """
@@ -95,6 +99,7 @@ class ALU():
     """
     self.__outPorts[1] = self.__inpPorts[0]()<self.__inpPorts[1]()
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
 
   def __or(self):
@@ -103,6 +108,7 @@ class ALU():
     """
     self.__outPorts[1] = self.__inpPorts[0]() | self.__inpPorts[1]()
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
   def __xor(self):
     """
@@ -110,26 +116,27 @@ class ALU():
     """
     self.__outPorts[1] = self.__inpPorts[0]() ^ self.__inpPorts[1]()
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
   def __div(self):
     """
 
     """
 
-    pass
+    return Status.DIV
 
   def __mul(self):
     """
     """
 
-    pass
+    return Status.MUL
 
   def __ret(self):
     """
         Terminates the program.
     """
     print("Break instruction encountered.\nProgram Terminated.")
-    sys.exit(0)
+    return Status.EXIT
 
   def __lui(self):
     '''
@@ -137,12 +144,13 @@ class ALU():
     '''
     self.__outPorts[1] = self.__inpPorts[1] << 16
     self.__outPorts[0] = ((self.__outPorts[1] and 1)+1)%2
+    return Status.CONTINUE
 
   def __mag(self):
     """
         This method handles all the syscall, mfho, mfli instructions.
     """
-    pass
+    return Status.MAGIC
 
 
   def setInputConnection(self, portID: int, portConnection:Callable):

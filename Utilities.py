@@ -20,6 +20,14 @@ class Opcode(Enum):
     MUL = "011100"
 
 
+class Status(Enum):
+    EXIT = 0
+    CONTINUE = 1
+    MAGIC = 2
+    MUL = 3
+    DIV = 4
+
+
 class Funct(Enum):
     SLL = "000000"
     SRA = "000011"
