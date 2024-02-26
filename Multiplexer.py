@@ -14,7 +14,7 @@ class Multiplexer():
         self.__input = [self.__ground for i in range(self.__size)]
         self.__control = control
 
-    def __ground():
+    def __ground(self):
         '''
             Used for grounding input
         '''
@@ -38,5 +38,8 @@ class Multiplexer():
         '''
         if(self.__control()>self.__size-1):
             printErrorandExit(f"Invalid Control Signal.")
+
+        for x in self.__input:
+            print("ib", x())
         return self.__input[self.__control()]()
 

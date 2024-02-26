@@ -119,10 +119,18 @@ class RegSet():
             printErrorandExit(f"Invalid Register ID: {regNumber}")
 
         if (self.__re() == 1):
+            print("bad", regNumber, self._regset[regNumber].getVal())
             return ((self._regset[regNumber]).getVal)
         else:
             print("Reading is not enabled.")
             return self._ground
+
+    def dump(self):
+        print()
+        n = 0
+        for i in self._regset:
+            print(f"${n}: {i.getVal()}")
+            n += 1
 
     def write(self, portID = 0):
         

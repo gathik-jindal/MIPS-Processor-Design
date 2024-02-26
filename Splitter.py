@@ -26,18 +26,21 @@ class Splitter():
         '''
            Method to get RS field from the word. 
         '''
+        print("RS", int(self.__data()[6:11], 2))
         return int(self.__data()[6:11], 2)
     
     def getRT(self):
         '''
            Method to get RT field from the word. 
         '''
+        print("RT", int(self.__data()[11:16], 2))
         return int(self.__data()[11:16], 2)
     
     def getRD(self):
         '''
            Method to get RD field from the word. 
         '''
+        print("RD", int(self.__data()[16:21], 2))
         return int(self.__data()[16:21], 2)
     
     def getImm(self):

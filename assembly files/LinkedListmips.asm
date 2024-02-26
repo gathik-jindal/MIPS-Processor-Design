@@ -18,7 +18,7 @@
     .asciiz "From node :  "
     
   promptCheck:
-    .asciiz "\n\nChecking for cycles now:"
+    .asciiz "Checking for cycles now:"
     
   promptNoC:
     .asciiz "\nNo cycles found.\n\nPrinting the nodes:\n"
