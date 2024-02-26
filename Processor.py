@@ -166,7 +166,7 @@ class Processor():
         '''
             This method is for the AND gate for branch instruction.
         '''
-        return self.Controller.getBranch() and self.ALU.getFlag()
+        return self.Controller.getBranch() and self.ALU.getZeroFlag()
 
     def ImmshiftLeft2(self):
         '''
