@@ -23,7 +23,7 @@ class Control():
            Opcode.SW.value        : [0, 0, 0, 1, 0, ALUOp.ADDI, 1, 0, 1, 0, 0],
            Opcode.R_FORMAT.value  : [1, 0, 0, 0, 0, ALUOp.R_FORMAT, 0, 1, 1, 0, 0],
            Opcode.J.value         : [0, 0, 0, 0, 0, ALUOp.J, 0, 0, 0, 0, 2],
-           Opcode.JAL.value       : [3, 0, 0, 0, 2, ALUOp.JAL, 0, 1, 0, 0, 2],
+           Opcode.JAL.value       : [2, 0, 0, 0, 2, ALUOp.JAL, 0, 1, 0, 0, 2],
            Opcode.MUL.value       : [1, 0, 0, 0, 0, ALUOp.MUL, 0, 1, 1, 0, 0 ]
 
            }
