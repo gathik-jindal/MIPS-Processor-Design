@@ -183,7 +183,8 @@ class Global(Memory):
         bytes //= 4
 
         with open(self._fileName, 'r') as fh:
-            lines = len(fh.readlines())
+            lines = fh.readlines()
+            length = len(lines)
 
         while (bytes > 0):
             lines.append('\n')
@@ -192,7 +193,7 @@ class Global(Memory):
         with open(self._fileName, 'w') as fh:
             fh.writelines(lines)
 
-        return lines + GLOBALPOINTER - self.__gpWrtToFile
+        return length + GLOBALPOINTER - self.__gpWrtToFile
 
 
 class Data(Memory):
@@ -438,6 +439,8 @@ if __name__ == "__main__":
 
     obj = DataMemory(foo, foo, "LinkedListDataBin",
                      "LinkedListStackBin", "LinkedListHeapBin")
+
+    print(obj.malloc(100))
 
     # data
     x = 4
