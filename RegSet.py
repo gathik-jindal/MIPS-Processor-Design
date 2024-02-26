@@ -108,13 +108,12 @@ class RegSet():
             
         regNumber = (self.__readLines[portID])()
         if type(regNumber) == type("1"):
-            regNumber = int(regNumber,2)
+            regNumber = int("0"+regNumber,2)
 
         if (self.__count <= regNumber):
             printErrorandExit(f"Invalid Register ID: {regNumber}")
 
         if (self.__re() == 1):
-            print(f"Reading value from ${regNumber}.")
             return ((self._regset[regNumber]).getVal)
         else:
             print("Reading is not enabled.")
@@ -132,7 +131,7 @@ class RegSet():
         
         regNumber = (self.__writeLines[portID])()
         if type(regNumber) == type("1"):
-            regNumber = int(regNumber,2)
+            regNumber = int("0" + regNumber,2)
 
         if (self.__count <= regNumber):
             printErrorandExit(f"Invalid Register ID: {regNumber}")
