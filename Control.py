@@ -11,7 +11,7 @@ class Control():
     def __init__(self):
 
         self.__decode = {
-            
+            # RegDst, Branch, MemRead, MemWrite, WB, ALUOP, ALUSRC, RegWrite, RegRead, BranchSelect, pcSelect
            Opcode.ADDI.value      : [0, 0, 0, 0, 0, ALUOp.ADDI, 1, 1, 1, 0, 0],    # Change these control signals
            Opcode.ADDIU.value     : [0, 0, 0, 0, 0, ALUOp.ADDIU, 1, 1, 1, 0, 0],
            Opcode.BEQ.value       : [0, 1, 0, 0, 0, ALUOp.BEQ, 0, 0, 1, 0, 1],
