@@ -41,5 +41,5 @@ class Multiplexer():
 
         for x in self.__input:
             print("ib", x())
-        return self.__input[self.__control()]()
+        return self.__input[self.__control()]############
 

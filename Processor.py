@@ -100,8 +100,8 @@ class Processor():
         '''
             Method for connecting the input ports of ALUSrcMux.
         '''
-
-        self.ALUSrcMux.connectData(0, self.RegisterFile.read(1))
+        print(self.RegisterFile.read)
+        self.ALUSrcMux.connectData(0, self.RegisterFile.read)
         self.ALUSrcMux.connectData(1, self.splitter.getImm)
 
     def __connectWriteBackMux(self):
@@ -128,7 +128,7 @@ class Processor():
         self.PCSelectMux.connectData(0, self.PCadder)
         self.PCSelectMux.connectData(1, self.BranchAdder)
         self.PCSelectMux.connectData(2, self.JumpshiftLeft2)
-        self.PCSelectMux.connectData(3, self.RegisterFile.read(0))
+        self.PCSelectMux.connectData(3, self.RegisterFile.read)
 
     def RunMCU(self):
         '''
@@ -203,7 +203,7 @@ class Processor():
         """
         # Instruction Fetch
         self.RunMCU()
-        print("hi",self.RegisterFile.read(0)())
+        print("hi", self.RegisterFile.read(0)())
         self.__status = self.ALU.run()
 
         if (self.__status == Status.CONTINUE):

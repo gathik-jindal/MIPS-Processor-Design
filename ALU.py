@@ -76,8 +76,9 @@ class ALU():
         """
             Method for shift left logical operation.
         """
-
-        self.__outPorts[1] = self.__inpPorts[0](0)() << self.__inpPorts[2]()
+        print(self.__inpPorts[1]()())
+        print("sll", (((self.__inpPorts[1])())()), self.__inpPorts[2]())
+        self.__outPorts[1] = self.__inpPorts[1]()() << self.__inpPorts[2]()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
