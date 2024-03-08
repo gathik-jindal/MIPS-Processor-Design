@@ -68,7 +68,7 @@ class ALU():
         """
             Method for add operation.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)()+self.__inpPorts[1]()
+        self.__outPorts[1] = self.__inpPorts[0](0)()+self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -76,9 +76,9 @@ class ALU():
         """
             Method for shift left logical operation.
         """
-        print(self.__inpPorts[1]()())
-        print("sll", (((self.__inpPorts[1])())()), self.__inpPorts[2]())
-        self.__outPorts[1] = self.__inpPorts[1]()() << self.__inpPorts[2]()
+        print(self.__inpPorts[1]()(1)())
+        print("sll", self.__inpPorts[1]()(1)(), self.__inpPorts[2]())
+        self.__outPorts[1] = self.__inpPorts[1]()(1)() << self.__inpPorts[2]()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -94,7 +94,7 @@ class ALU():
         """
             Method for sub operation.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)()-self.__inpPorts[1]()
+        self.__outPorts[1] = self.__inpPorts[0](0)()-self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -102,7 +102,7 @@ class ALU():
         """
             Method for algebraic comparison of inputs.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)() < self.__inpPorts[1]()
+        self.__outPorts[1] = self.__inpPorts[0](0)() < self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -112,7 +112,7 @@ class ALU():
         """
         print(self.__inpPorts[0], self.__inpPorts[1])
         t1 = self.__inpPorts[0](0)()
-        t2 = self.__inpPorts[1]()
+        t2 = self.__inpPorts[1]()(1)()
         self.__outPorts[1] = t1 | t2
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
@@ -121,7 +121,7 @@ class ALU():
         """
             Method for bitwise xor operation.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)() ^ self.__inpPorts[1]()
+        self.__outPorts[1] = self.__inpPorts[0](0)() ^ self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -149,7 +149,7 @@ class ALU():
         '''
             Special operation to right shift immediate value by 16
         '''
-        self.__outPorts[1] = self.__inpPorts[1]() << 16
+        self.__outPorts[1] = self.__inpPorts[1]()(1)() << 16
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -174,8 +174,7 @@ class ALU():
     def setInputConnection(self, portID: int, portConnection: Callable):
         typeCheck({portID: int, portConnection: Callable})
         if (portID >= self.__iPC):
-            printErrorandExit(f"Invalid portID for an ALU with {
-                              self.__iPC} input ports.")
+            printErrorandExit(f"Invalid portID for an ALU with {self.__iPC} input ports.")
         self.__inpPorts[portID] = portConnection
 
     def getOutput(self, portID=1):
@@ -185,8 +184,7 @@ class ALU():
         '''
         typeCheck({portID: int})
         if (portID >= self.__oPC):
-            printErrorandExit(f"Invalid portID for an ALU with {
-                              self.__oPC} output ports.")
+            printErrorandExit(f"Invalid portID for an ALU with {self.__oPC} output ports.")
         return self.__outPorts[portID]
 
     def getZeroFlag(self):
