@@ -94,8 +94,9 @@ class ALU():
         """
             Method for sub operation.
         """
+        print("inside sub")
         self.__outPorts[1] = self.__inpPorts[0](0)()-self.__inpPorts[1]()(1)()
-        self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
+        self.__outPorts[0] = int(not(self.__outPorts[1]))
         return Status.CONTINUE
 
     def __comp(self):
@@ -191,4 +192,5 @@ class ALU():
         '''
             Method to get the zero flag from ALU. 
         '''
+        print("in getZeroFlag", self.__outPorts[0])
         return self.__outPorts[0]
