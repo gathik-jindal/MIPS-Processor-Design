@@ -82,7 +82,7 @@ class Processor():
         '''
             Method for connecting all the input ports to the ALU.
         '''
-
+        
         self.ALU.setInputConnection(0, self.RegisterFile.read)
         self.ALU.setInputConnection(1, self.ALUSrcMux.getData)
         self.ALU.setInputConnection(2, self.splitter.getShamt)
@@ -102,7 +102,7 @@ class Processor():
         '''
         print(self.RegisterFile.read)
         self.ALUSrcMux.connectData(0, self.RegisterFile.read)
-        self.ALUSrcMux.connectData(1, self.splitter.getImm)
+        self.ALUSrcMux.connectData(1, lambda a: self.splitter.getImm)
 
     def __connectWriteBackMux(self):
         '''
@@ -125,9 +125,9 @@ class Processor():
         '''
             Method for connecting the input ports of BranchSelectMux.
         '''
-        self.PCSelectMux.connectData(0, self.PCadder)
-        self.PCSelectMux.connectData(1, self.BranchAdder)
-        self.PCSelectMux.connectData(2, self.JumpshiftLeft2)
+        self.PCSelectMux.connectData(0, lambda: self.PCadder)
+        self.PCSelectMux.connectData(1, lambda: self.BranchAdder)
+        self.PCSelectMux.connectData(2, lambda: self.JumpshiftLeft2)
         self.PCSelectMux.connectData(3, self.RegisterFile.read)
 
     def RunMCU(self):
@@ -270,8 +270,7 @@ class Processor():
 
         else:
             self.magic()
-
-        self.PC.writeVal(self.PCSelectMux.getData())
+        self.PC.writeVal(self.PCSelectMux.getData()()())
 
     def magic(self):
         print(self.__status)
@@ -283,6 +282,7 @@ class Processor():
 
         elif (self.__status == Status.MAGIC1):
             code = self.RegisterFile._regset[2].readVal()
+            print(code)
             if code == 1:
                 print(self.RegisterFile._regset[4].readVal())
 
@@ -330,21 +330,21 @@ class Processor():
         if (mode == 0):
             while (self.__clock < untill and self.__status != Status.EXIT):
                 self.__clock += 1
+                # input("Enter to continue:")
                 print(f"Starting clock cycle {self.__clock}")
                 self.__instructionRun()
                 self.RegisterFile.dump()
                 print()
             else:
                 if (self.__clock == untill):
-                    print(f"Reached Breakpoint before clock cycle {
-                          self.__clock}")
+                    print(f"Reached Breakpoint before clock cycle {self.__clock}")
                 else:
-                    print(f"Program Succesfully terminated at clock cycle {
-                          self.__clock}")
+                    print(f"Program Succesfully terminated at clock cycle {self.__clock}")
 
         elif (mode == 1):
             while (self.__clock < untill and self.__status != Status.EXIT):
                 self.__clock += 1
+                # input("Enter to continue:")
                 print(f"Starting clock cycle {self.__clock}")
                 self.__instructionRun()
                 self.RegisterFile.dump()
@@ -352,11 +352,9 @@ class Processor():
                 # input()
             else:
                 if (self.__clock == untill):
-                    print(f"Reached Breakpoint before clock cycle {
-                          self.__clock}")
+                    print(f"Reached Breakpoint before clock cycle {self.__clock}")
                 else:
-                    print(f"Program Succesfully terminated at clock cycle {
-                          self.__clock}")
+                    print(f"Program Succesfully terminated at clock cycle {self.__clock}")
 
         else:
             print("Invalid mode for running the Processor")
