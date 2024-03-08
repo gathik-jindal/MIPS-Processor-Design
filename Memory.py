@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import linecache
 from Utilities import typeCheck, printErrorandExit
 from typing import Callable
+import os
 
 DATA = 0x10010000
 STACKPOINTER = 0x7fffeffc
@@ -18,8 +19,8 @@ class Memory(ABC):
 
     def __init__(self, fileName: str) -> None:
         typeCheck({fileName: str})
-
-        self._fileName = "Memory/" + fileName
+        print(os.getcwd())
+        self._fileName = os.path.join('Memory', fileName)
 
         if (self._fileName.endswith(".txt") == False):
             self._fileName = self._fileName + ".txt"
@@ -123,7 +124,7 @@ class Global(Memory):
     The fileName can optionally not have the filetype.
     """
 
-    def __init__(self, fileName="LinkedListGlobalBin.txt") -> None:
+    def __init__(self, fileName="LinkedListHeapBin.txt") -> None:
         self.__gpWrtToFile = 0
         super().__init__(fileName)
 
@@ -140,8 +141,7 @@ class Global(Memory):
                 i += 1
                 ans = ans + str(val % 2)
                 val = val >> 1
-
-        value = ans[::-1]
+            value = ans[::-1]
 
         typeCheck({location: int, value: str})
 
@@ -226,7 +226,7 @@ class Data(Memory):
     The fileName can optionally not have the filetype.
     """
 
-    def __init__(self, readControl: Callable, writeControl: Callable, fileName="LinkedListData.txt") -> None:
+    def __init__(self, readControl: Callable, writeControl: Callable, fileName="LinkedListDataBin.txt") -> None:
         super().__init__(fileName)
 
         typeCheck({readControl: Callable, writeControl: Callable})
@@ -336,8 +336,7 @@ class Data(Memory):
                 i += 1
                 ans = ans + str(val % 2)
                 val = val >> 1
-
-        value = ans[::-1]
+            value = ans[::-1]
 
         typeCheck({value: str, location: int})
 
@@ -380,8 +379,7 @@ class Stack(Memory):
                 i += 1
                 ans = ans + str(val % 2)
                 val = val >> 1
-
-        value = ans[::-1]
+            value = ans[::-1]
         
         typeCheck({location: int, value: str})
 
@@ -435,7 +433,7 @@ class InstructionMemory(Memory):
     The fileName can optionally not have the filetype.
     """
 
-    def __init__(self, fileName="LinkedListTextBin") -> None:
+    def __init__(self, fileName="LinkedListTextBin.txt") -> None:
         super().__init__(fileName)
 
     def storeWord(self, value: str, location: int) -> None:
@@ -472,7 +470,9 @@ def foo():
 
 
 if __name__ == "__main__":
-
+    print(os.getcwd())
+    with open("C:\\Users\\mohdi\\Downloads\\VSCode\\MIPS-Processor-Design-master\\MIPS-Processor-Design-master\\Memory\\LinkedListTextBin.txt", 'r') as h:
+        line = h.readline()
     # .data starts from 0x10010000 (DATA)
     # $sp starts from 0x7fffeffc (STACKPOINTER)
     # $gp starts from 0x10008000 (GLOBALPOINTER)
@@ -481,11 +481,13 @@ if __name__ == "__main__":
     # GLOBALPOINTER = 0x10008000
     # TEXT = 0x00400000
     value = "11111111111111111111111111111111"
-
+    ins = InstructionMemory("LinkedListTextBin")
+    ins.loadWord(4194312)
     obj = DataMemory(foo, foo, "LinkedListDataBin",
                      "LinkedListStackBin", "LinkedListHeapBin")
 
-    print(obj.malloc(100))
+    print("malloc", obj.malloc(100))
+
 
     # data
     x = 4
