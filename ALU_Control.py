@@ -56,8 +56,8 @@ class ALUControl:
         self.__operations = {
                    ALUOp.ADDI      :       Operation.ADD,
                    ALUOp.ADDIU     :       Operation.ADD,
-                   ALUOp.BEQ       :       Operation.COMP,
-                   ALUOp.BNE       :       Operation.COMP,
+                   ALUOp.BEQ       :       Operation.SUB,
+                   ALUOp.BNE       :       Operation.SUB,
                    ALUOp.LUI       :       Operation.LUI,
                    ALUOp.LW        :       Operation.ADD,
                    ALUOp.ORI       :       Operation.OR,
