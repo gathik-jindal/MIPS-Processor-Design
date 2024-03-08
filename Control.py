@@ -36,7 +36,7 @@ class Control():
         """
             Runs the processor commands and generates the correct control signals.
         """
-           
+        print("in control, in run",opcode)  
         self.__state = self.__decode[opcode]
         self.dump(opcode, enable)
         
