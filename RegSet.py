@@ -142,14 +142,16 @@ class RegSet():
         if (self.__wPC <= portID):
             printErrorandExit(f"Invalid portID: {portID}")
         
-        regNumber = (self.__writeLines[portID])()
+        regNumber = (self.__writeLines[portID])()()
+        print(regNumber)
+        print(self.__writeLines[0]())
         if type(regNumber) == type("1"):
             regNumber = int("0" + regNumber,2)
 
         if (self.__count <= regNumber):
             printErrorandExit(f"Invalid Register ID: {regNumber}")
             
-        writeData = self.__dataLines[portID]()
+        writeData = self.__dataLines[portID]()()
         if type(writeData) == type("1"):
             writeData = int(writeData,2)
 
