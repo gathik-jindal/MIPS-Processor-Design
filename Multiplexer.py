@@ -39,7 +39,6 @@ class Multiplexer():
         if(self.__control()>self.__size-1):
             printErrorandExit(f"Invalid Control Signal.")
 
-        for x in self.__input:
-            print("ib", x())
+        print("self.control=",self.__control)
         return self.__input[self.__control()]############
 
