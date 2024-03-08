@@ -50,20 +50,20 @@ class Funct(Enum):
 
 
 class ALUOp(Enum):
-    ADDI = "010"
-    ADDIU = "010"
-    BEQ = "100"
-    BNE = "100"
-    LUI = "011"
-    LW = "010"
-    ORI = "111"
-    SLTI = "100"
-    SW = "010"
-    R_FORMAT = "000"
-    MUL = "101"
-    J = "001"
-    JAL = "001"
-    DEF = "001"
+    ADDI = "0010"
+    ADDIU = "0010"
+    BEQ = "1100"
+    BNE = "1100"
+    LUI = "0011"
+    LW = "0010"
+    ORI = "0111"
+    SLTI = "0100"
+    SW = "0010"
+    R_FORMAT = "0000"
+    MUL = "0101"
+    J = "0001"
+    JAL = "0001"
+    DEF = "0001"
 
 
 class Operation(Enum):
