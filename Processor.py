@@ -60,6 +60,9 @@ class Processor():
 
         self.BranchSelectMux = Multiplexer(2, self.Controller.getBranchSelect)
         self.__connectBranchSelectMux()
+
+        self.BranchMux = Multiplexer(2, self.branchGate)
+        self.__connectBranchMux()
         self.PCSelectMux = Multiplexer(4, self.Controller.getpcSelect)
         self.__connectPCSelectMux()
 
@@ -121,12 +124,20 @@ class Processor():
         self.BranchSelectMux.connectData(0, self.ALU.getZeroFlag)
         self.BranchSelectMux.connectData(1, self.notZero)
 
+    def __connectBranchMux(self):
+        '''
+            Method for connecting the input ports of BranchMux.
+        '''
+        
+        self.BranchMux.connectData(0, self.PCadder)
+        self.BranchMux.connectData(1, self.BranchAdder)
+
     def __connectPCSelectMux(self):
         '''
-            Method for connecting the input ports of BranchSelectMux.
+            Method for connecting the input ports of PCSelectMux.
         '''
         self.PCSelectMux.connectData(0, lambda: self.PCadder)
-        self.PCSelectMux.connectData(1, lambda: self.BranchAdder)
+        self.PCSelectMux.connectData(1, self.BranchMux.getData)
         self.PCSelectMux.connectData(2, lambda: self.JumpshiftLeft2)
         self.PCSelectMux.connectData(3, self.RegisterFile.read)
 
@@ -164,19 +175,20 @@ class Processor():
         '''
             This method is for the not gate after the Zero flag(for BNE).
         '''
-        return int(not (self.ALU.getZeroFlag()))
+        print("not zero", int(not(self.ALU.getZeroFlag())))
+        return int(not(self.ALU.getZeroFlag()))
 
     def branchGate(self):
         '''
             This method is for the AND gate for branch instruction.
         '''
-        return self.Controller.getBranch() and self.ALU.getZeroFlag()
+        return (self.Controller.getBranch()==1 and self.ALU.getZeroFlag()) or (self.Controller.getBranch()==2 and self.notZero())
 
     def ImmshiftLeft2(self):
         '''
             This method implements the Left Shifter(by 2) on Immediate value.
         '''
-        return self.signExtend() << 2
+        return self.signExtend()*4
 
     def JumpshiftLeft2(self):
         '''
@@ -195,7 +207,7 @@ class Processor():
         '''
             This method implements the branch adder unit(new PC + Immediate*4).
         '''
-        return self.ImmshiftLeft2()+self.new_PC
+        return self.ImmshiftLeft2()+self.PCadder()
 
     def __instructionRun(self):
         """
@@ -203,7 +215,6 @@ class Processor():
         """
         # Instruction Fetch
         self.RunMCU()
-        print("hi", self.RegisterFile.read(0)())
         self.__status = self.ALU.run()
 
         if (self.__status == Status.CONTINUE):
