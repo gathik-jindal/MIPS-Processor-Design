@@ -199,6 +199,8 @@ class Global(Memory):
         For now bytes have to be a multiple of 4.
         """
 
+        byte = bytes
+
         if (bytes % 4 != 0):
             printErrorandExit(
                 "Number of bytes for malloc is not a multiple of 4.")
@@ -207,16 +209,18 @@ class Global(Memory):
 
         with open(self._fileName, 'r') as fh:
             lines = fh.readlines()
-            length = len(lines)
 
         while (bytes > 0):
-            lines.append('\n')
+            lines = ['\n'] + lines
             bytes -= 1
 
         with open(self._fileName, 'w') as fh:
             fh.writelines(lines)
 
-        return length + GLOBALPOINTER - self.__gpWrtToFile
+        val = GLOBALPOINTER - (self.__gpWrtToFile + 1)*4 - byte
+        self.__gpWrtToFile += byte//4 + 1
+
+        return val
 
 
 class Data(Memory):
@@ -380,7 +384,7 @@ class Stack(Memory):
                 ans = ans + str(val % 2)
                 val = val >> 1
             value = ans[::-1]
-        
+
         typeCheck({location: int, value: str})
 
         location = STACKPOINTER - location
@@ -471,7 +475,7 @@ def foo():
 
 if __name__ == "__main__":
     print(os.getcwd())
-    with open("C:\\Users\\mohdi\\Downloads\\VSCode\\MIPS-Processor-Design-master\\MIPS-Processor-Design-master\\Memory\\LinkedListTextBin.txt", 'r') as h:
+    with open("Memory\\LinkedListTextBin.txt", 'r') as h:
         line = h.readline()
     # .data starts from 0x10010000 (DATA)
     # $sp starts from 0x7fffeffc (STACKPOINTER)
@@ -485,9 +489,6 @@ if __name__ == "__main__":
     ins.loadWord(4194312)
     obj = DataMemory(foo, foo, "LinkedListDataBin",
                      "LinkedListStackBin", "LinkedListHeapBin")
-
-    print("malloc", obj.malloc(100))
-
 
     # data
     x = 4
@@ -503,14 +504,19 @@ if __name__ == "__main__":
 
     # global
     x = 8
-    obj.storeWord(value, GLOBALPOINTER - x)
-    print(obj.loadWord(GLOBALPOINTER - x))
+    obj.storeWord(value, GLOBALPOINTER + x)
+    print(obj.loadWord(GLOBALPOINTER + x))
     x = 0
-    obj.storeWord(value, GLOBALPOINTER - x)
-    print(obj.loadWord(GLOBALPOINTER - x))
-    x = -8
-    obj.storeWord(value, GLOBALPOINTER - x)
-    print(obj.loadWord(GLOBALPOINTER - x))
+    obj.storeWord(value, GLOBALPOINTER + x)
+    print(obj.loadWord(GLOBALPOINTER + x))
+    x = obj.malloc(20)
+    print("malloc", x)
+    obj.storeWord(value, x)
+    print(obj.loadWord(x))
+    x = obj.malloc(20)
+    print("malloc", x)
+    obj.storeWord(value, x)
+    print(obj.loadWord(x))
 
     obj = InstructionMemory("LinkedListTextBin")
     x = 6
