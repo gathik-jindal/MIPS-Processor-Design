@@ -15,7 +15,7 @@ class Control():
            Opcode.ADDI.value      : [0, 0, 0, 0, 0, ALUOp.ADDI, 1, 1, 1, 0, 0],    # Change these control signals
            Opcode.ADDIU.value     : [0, 0, 0, 0, 0, ALUOp.ADDIU, 1, 1, 1, 0, 0],
            Opcode.BEQ.value       : [0, 1, 0, 0, 0, ALUOp.BEQ, 0, 0, 1, 0, 1],
-           Opcode.BNE.value       : [0, 1, 0, 0, 0, ALUOp.BNE, 0, 0, 1, 1, 1],
+           Opcode.BNE.value       : [0, 2, 0, 0, 0, ALUOp.BNE, 0, 0, 1, 1, 1],
            Opcode.LUI.value       : [0, 0, 0, 0, 0, ALUOp.LUI, 1, 1, 0, 0, 0],
            Opcode.LW.value        : [0, 0, 1, 0, 1, ALUOp.LW, 1, 1, 1, 0, 0],
            Opcode.ORI.value       : [0, 0, 0, 0, 0, ALUOp.ORI, 1, 1, 1, 0, 0],
@@ -118,7 +118,7 @@ class Control():
         """
             Provides the control line for BranchSelect Mux.
         """
-
+        print("Control, getbranch select", self.__state[9])
         return self.__state[9]
 
     def getpcSelect(self):
