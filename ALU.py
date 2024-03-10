@@ -35,6 +35,7 @@ class ALU():
             Operation.SUB:           self.__sub,
             Operation.LUI:           self.__lui,
             Operation.COMP:           self.__comp,
+            Operation.UNSIGNED_COMP:  self.__unsigned_comp,
             Operation.OR:           self.__or,
             Operation.XOR:           self.__xor,
             Operation.DIV:           self.__div,
@@ -76,8 +77,6 @@ class ALU():
         """
             Method for shift left logical operation.
         """
-        print(self.__inpPorts[1]()(1)())
-        print("sll", self.__inpPorts[1]()(1)(), self.__inpPorts[2]())
         self.__outPorts[1] = self.__inpPorts[1]()(1)() << self.__inpPorts[2]()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
@@ -94,7 +93,6 @@ class ALU():
         """
             Method for sub operation.
         """
-        print("inside sub")
         self.__outPorts[1] = self.__inpPorts[0](0)()-self.__inpPorts[1]()(1)()
         self.__outPorts[0] = int(not(self.__outPorts[1]))
         return Status.CONTINUE
@@ -103,7 +101,15 @@ class ALU():
         """
             Method for algebraic comparison of inputs.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)() < self.__inpPorts[1]()(1)()
+        self.__outPorts[1] = int(self.__inpPorts[0](0)() < self.__inpPorts[1]()(1)())
+        self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
+        return Status.CONTINUE
+    
+    def __unsigned_comp(self):
+        """
+            Method for algebraic comparison of inputs.
+        """
+        self.__outPorts[1] = int(abs(self.__inpPorts[0](0)()) < abs(self.__inpPorts[1]()(1)()))
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -111,10 +117,8 @@ class ALU():
         """
             Method for bitwise or operation.
         """
-        print(self.__inpPorts[0], self.__inpPorts[1])
-        t1 = self.__inpPorts[0](0)()
-        t2 = self.__inpPorts[1]()(1)()
-        self.__outPorts[1] = t1 | t2
+        print(self.__inpPorts[0](0)(),self.__inpPorts[1]()(1)())
+        self.__outPorts[1] = self.__inpPorts[0](0)() ^ self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -192,5 +196,4 @@ class ALU():
         '''
             Method to get the zero flag from ALU. 
         '''
-        print("in getZeroFlag", self.__outPorts[0])
         return self.__outPorts[0]

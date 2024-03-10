@@ -19,7 +19,6 @@ class Memory(ABC):
 
     def __init__(self, fileName: str) -> None:
         typeCheck({fileName: str})
-        print(os.getcwd())
         self._fileName = os.path.join('Memory', fileName)
 
         if (self._fileName.endswith(".txt") == False):
@@ -453,7 +452,6 @@ class InstructionMemory(Memory):
         Fetches the instruction at memory location <location>.
         """
         typeCheck({location: int})
-
         location = location - TEXT
 
         if (location % 4 != 0):

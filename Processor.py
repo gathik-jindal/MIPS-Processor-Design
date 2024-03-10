@@ -54,6 +54,8 @@ class Processor():
         self.RegisterFile.writeEnable(self.Controller.getRegWrite)
         self.RegisterFile.readEnable(self.Controller.getRegRead)
         self.__connectRegFile()
+        self.RegisterFile._regset[28].writeVal(268468224)
+        self.RegisterFile._regset[29].writeVal(2147479548)
 
         self.ALUSrcMux = Multiplexer(2, self.Controller.getALUSrc)
         self.__connectALUSrcMux()
@@ -103,7 +105,6 @@ class Processor():
         '''
             Method for connecting the input ports of ALUSrcMux.
         '''
-        print(self.RegisterFile.read)
         self.ALUSrcMux.connectData(0, self.RegisterFile.read)
         self.ALUSrcMux.connectData(1, lambda a: self.splitter.getImm)
 
@@ -175,7 +176,6 @@ class Processor():
         '''
             This method is for the not gate after the Zero flag(for BNE).
         '''
-        print("not zero", int(not(self.ALU.getZeroFlag())))
         return int(not(self.ALU.getZeroFlag()))
 
     def branchGate(self):
@@ -238,7 +238,6 @@ class Processor():
                 ans = ans + str(val % 2)
                 val = val >> 1
             ans = int(ans[::-1], 2)
-            print(ans)
             self.RegisterFile.hardcode(Splitter.getRD(), ans)
             self.LO.writeVal(ans)
 
@@ -249,7 +248,6 @@ class Processor():
                 ans = ans + str(val % 2)
                 val = val >> 1
             ans = int(ans[::-1], 2)
-            print(ans)
             self.HI.writeVal(ans)
 
         elif (self.__status == Status.DIV):
@@ -298,7 +296,9 @@ class Processor():
                 print(self.RegisterFile._regset[4].readVal())
 
             elif code == 4:
+                print(True)
                 address = self.RegisterFile._regset[4].readVal()
+                print(address)
                 string = self.DataMemory.loadString(address)
                 print(string)
 
@@ -340,10 +340,13 @@ class Processor():
 
         if (mode == 0):
             while (self.__clock < untill and self.__status != Status.EXIT):
+                # if(self.__clock%50 == 0):
+                #     input("wait...")
                 self.__clock += 1
                 # input("Enter to continue:")
                 print(f"Starting clock cycle {self.__clock}")
                 self.__instructionRun()
+                print(self.PC.getVal())
                 self.RegisterFile.dump()
                 print()
             else:
@@ -358,6 +361,7 @@ class Processor():
                 # input("Enter to continue:")
                 print(f"Starting clock cycle {self.__clock}")
                 self.__instructionRun()
+                print(self.PC.getVal())
                 self.RegisterFile.dump()
                 print()
                 # input()
@@ -371,7 +375,6 @@ class Processor():
             print("Invalid mode for running the Processor")
 
 
-if __name__ == "__main__":
 
-    P = Processor()
-    P.run()
+P = Processor()
+P.run()

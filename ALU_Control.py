@@ -43,7 +43,7 @@ class ALUControl:
                    Funct.ADD       :        Operation.ADD,
                    Funct.SUB       :        Operation.SUB,
                    Funct.SLT       :        Operation.COMP,
-                   Funct.SLTU      :        Operation.COMP,
+                   Funct.SLTU      :        Operation.UNSIGNED_COMP,
                    Funct.JR        :        Operation.NOP,
                    Funct.BREAK     :        Operation.RET,
                    Funct.SYSCALL   :        Operation.MAG1,
@@ -121,7 +121,7 @@ class ALUControl:
         
         if(self.__ALUOp not in self.__operations or self.__funct not in self.__rf_operations):
             printErrorandExit("ALU cannot handle this request. Please update the ALU.")
-        if(self.__funct == Funct.JR):
+        if(self.__ALUOp==ALUOp.R_FORMAT and self.__funct == Funct.JR):
             self.__pcSelectModifier()
         return self.__operations[self.__ALUOp]
     

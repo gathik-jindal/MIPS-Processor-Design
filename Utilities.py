@@ -73,6 +73,7 @@ class Operation(Enum):
     SRA = "00011"
     SUB = "00100"
     COMP = "00101"
+    UNSIGNED_COMP = "10101"
     OR = "00110"
     XOR = "00111"
     DIV = "01000"
