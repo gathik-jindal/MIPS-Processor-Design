@@ -117,8 +117,7 @@ class ALU():
         """
             Method for bitwise or operation.
         """
-        print(self.__inpPorts[0](0)(),self.__inpPorts[1]()(1)())
-        self.__outPorts[1] = self.__inpPorts[0](0)() ^ self.__inpPorts[1]()(1)()
+        self.__outPorts[1] = self.__inpPorts[0](0)() | self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
