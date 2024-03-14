@@ -32,10 +32,13 @@ class Processor():
         self.Controller = Control()
         self.Controller.run(opcode="000000", enable=0)
 
-        self.InstructionMemory = InstructionMemory(
-            input("Enter instruction file name (Has to be in memory folder): "))
-        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, input("Enter data file name (Has to be in memory folder): "), input(
-            "Enter global data file name (Has to be in memory folder): "), input("Enter stack file name (Has to be in memory folder): "))
+        # self.InstructionMemory = InstructionMemory(
+        #     input("Enter instruction file name (Has to be in memory folder): "))
+        # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, input("Enter data file name (Has to be in memory folder): "), input(
+        #     "Enter global data file name (Has to be in memory folder): "), input("Enter stack file name (Has to be in memory folder): "))
+
+        self.InstructionMemory = InstructionMemory("LinkedListTextBin.txt")
+        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, "LinkedListDataBin.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
 
         self.ALUController = ALUControl(
             self.Controller.getALUOp, self.Controller.setpcSelect)
