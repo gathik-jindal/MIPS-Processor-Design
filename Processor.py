@@ -275,16 +275,16 @@ class Processor():
 
         elif (self.__status == Status.MAGIC1):
             code = self.RegisterFile._regset[2].readVal()
-            print(code)
+            #print(code)
             if code == 1:
                 print(self.RegisterFile._regset[4].readVal())
 
             elif code == 4:
-                print(True)
+                #print(True)
                 address = self.RegisterFile._regset[4].readVal()
-                print(address)
+                #print(address)
                 string = self.DataMemory.loadString(address)
-                print(string)
+                #print(string)
 
             elif code == 9:
                 n = self.RegisterFile._regset[4].readVal()
@@ -349,15 +349,14 @@ class Processor():
 
         if (mode == 0):
             while (self.__clock < untill and self.__status != Status.EXIT):
-                # if(self.__clock%50 == 0):
-                #     input("wait...")
                 self.__clock += 1
-                # input("Enter to continue:")
-                print(f"Starting clock cycle {self.__clock}")
-                self.__instructionRun()
-                print(self.PC.getVal())
-                self.RegisterFile.dump()
-                print()
+                if(self.__clock%50 == 0):
+                    print(f"Starting clock cycle {self.__clock}")
+                    input("Press enter to continue:")
+                    self.__instructionRun()
+                    print(self.PC.getVal())
+                    self.RegisterFile.dump()
+                    print()
             else:
                 if (self.__clock == untill):
                     print(f"Reached Breakpoint before clock cycle {self.__clock}")
@@ -367,13 +366,12 @@ class Processor():
         elif (mode == 1):
             while (self.__clock < untill and self.__status != Status.EXIT):
                 self.__clock += 1
-                # input("Enter to continue:")
+                input("Press enter to continue:")
                 print(f"Starting clock cycle {self.__clock}")
                 self.__instructionRun()
                 print(self.PC.getVal())
                 self.RegisterFile.dump()
                 print()
-                # input()
             else:
                 if (self.__clock == untill):
                     print(f"Reached Breakpoint before clock cycle {self.__clock}")
@@ -386,4 +384,4 @@ class Processor():
 
 if __name__ = "__main__":
     P = Processor()
-    P.run()
+    P.run(mode = 1)
