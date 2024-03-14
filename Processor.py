@@ -284,7 +284,7 @@ class Processor():
                 address = self.RegisterFile._regset[4].readVal()
                 #print(address)
                 string = self.DataMemory.loadString(address)
-                #print(string)
+                print(string)
 
             elif code == 9:
                 n = self.RegisterFile._regset[4].readVal()
