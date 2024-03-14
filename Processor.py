@@ -384,6 +384,6 @@ class Processor():
             print("Invalid mode for running the Processor")
 
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     P = Processor()
     P.run()
