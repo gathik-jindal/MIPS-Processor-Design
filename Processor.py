@@ -212,24 +212,8 @@ class Processor():
         '''
         return self.ImmshiftLeft2()+self.PCadder()
 
-    def __instructionRun(self):
-        """
-            This runs the processor.
-        """
-        # Instruction Fetch
-        self.RunMCU()
-        self.__status = self.ALU.run()
-
-        if (self.__status == Status.CONTINUE):
-            self.WriteData()
-            self.ReadData()
-            self.RegisterFile.write()
-
-        elif (self.__status == Status.EXIT):
-            return
-
-        elif (self.__status == Status.MUL):
-
+    def __multiply(self):
+        
             a = self.RegisterFile.read(0)()
             b = self.RegisterFile.read(1)()
 
@@ -253,8 +237,8 @@ class Processor():
             ans = int(ans[::-1], 2)
             self.HI.writeVal(ans)
 
-        elif (self.__status == Status.DIV):
-
+    def __divide(self):
+        
             a = self.RegisterFile.read(0)()
             b = self.RegisterFile.read(1)()
 
@@ -280,11 +264,8 @@ class Processor():
             self.HI.writeVal(rem)
             self.LO.writeVal(val)
 
-        else:
-            self.magic()
-        self.PC.writeVal(self.PCSelectMux.getData()()())
-
-    def magic(self):
+    def __magic(self):
+        
         print(self.__status)
         if (self.__status.value == Status.MAGIC2.value):
             self.RegisterFile.hardcode(Splitter.getRD(), self.HI.readVal())
@@ -331,9 +312,34 @@ class Processor():
 
             else:
                 printErrorandExit("Unsupported syscall")
-
         else:
             printErrorandExit("Error status")
+
+    def __instructionRun(self):
+        """
+            This runs the processor.
+        """
+        # Instruction Fetch
+        self.RunMCU()
+        self.__status = self.ALU.run()
+
+        if (self.__status == Status.CONTINUE):
+            self.WriteData()
+            self.ReadData()
+            self.RegisterFile.write()
+
+        elif (self.__status == Status.EXIT):
+            return
+
+        elif (self.__status == Status.MUL):
+            self.__multiply()
+
+        elif (self.__status == Status.DIV):
+            self.__divide()
+
+        else:
+            self.__magic()
+        self.PC.writeVal(self.PCSelectMux.getData()()())
 
     def run(self, mode=0, untill=1000000000):
         """
@@ -378,6 +384,6 @@ class Processor():
             print("Invalid mode for running the Processor")
 
 
-
-P = Processor()
-P.run()
+if __name__ = "__main__":
+    P = Processor()
+    P.run()
