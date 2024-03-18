@@ -28,6 +28,7 @@ class RegSet():
         
         self.__we = self._ground
         self.__re = self._ground
+        self.__mode = 1
         
 
     def hardcode(self, num, val):
@@ -43,6 +44,8 @@ class RegSet():
 
         return 0
 
+    def changeMode(self):
+        self.__mode = 1 - self.__mode
 
     def insertReg(self, pos:int, size:int, defaultVal = 0):
         
@@ -121,7 +124,8 @@ class RegSet():
         if (self.__re() == 1):
             return ((self._regset[regNumber]).getVal)
         else:
-            print("Reading is not enabled.")
+            if (self.__mode):
+                print("Reading is not enabled.")
             return self._ground
 
     def dump(self):
@@ -154,12 +158,16 @@ class RegSet():
             writeData = int(writeData,2)
 
         if (self.__we() == 1):
-            print(f"Writing value {writeData} to ${regNumber}.")
+            if (self.__mode):
+                print(f"Writing value {writeData} to ${regNumber}.")
             self._regset[regNumber].writeVal(writeData)
         else:
-            print("Write is not enabled")
+            if (self.__mode):
+                print("Write is not enabled")
             return self._ground
-        print()
+
+        if self.__mode:
+            print()
 
 
 
