@@ -37,8 +37,8 @@ class Processor():
         # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, input("Enter data file name (Has to be in memory folder): "), input(
         #     "Enter global data file name (Has to be in memory folder): "), input("Enter stack file name (Has to be in memory folder): "))
 
-        self.InstructionMemory = InstructionMemory("LinkedListTextBin.txt")
-        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, "LinkedListDataBin.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+        self.InstructionMemory = InstructionMemory("FindRankMIPSText.txt")
+        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
 
         self.ALUController = ALUControl(
             self.Controller.getALUOp, self.Controller.setpcSelect)
@@ -90,7 +90,7 @@ class Processor():
         '''
             Method for connecting all the input ports to the ALU.
         '''
-        
+
         self.ALU.setInputConnection(0, self.RegisterFile.read)
         self.ALU.setInputConnection(1, self.ALUSrcMux.getData)
         self.ALU.setInputConnection(2, self.splitter.getShamt)
@@ -132,7 +132,7 @@ class Processor():
         '''
             Method for connecting the input ports of BranchMux.
         '''
-        
+
         self.BranchMux.connectData(0, self.PCadder)
         self.BranchMux.connectData(1, self.BranchAdder)
 
@@ -145,7 +145,7 @@ class Processor():
         self.PCSelectMux.connectData(2, lambda: self.JumpshiftLeft2)
         self.PCSelectMux.connectData(3, self.RegisterFile.read)
 
-    def RunMCU(self, mode = 0):
+    def RunMCU(self, mode=0):
         '''
             Runs the Main Control Unit.
         '''
@@ -179,13 +179,13 @@ class Processor():
         '''
             This method is for the not gate after the Zero flag(for BNE).
         '''
-        return int(not(self.ALU.getZeroFlag()))
+        return int(not (self.ALU.getZeroFlag()))
 
     def branchGate(self):
         '''
             This method is for the AND gate for branch instruction.
         '''
-        return (self.Controller.getBranch()==1 and self.ALU.getZeroFlag()) or (self.Controller.getBranch()==2 and self.notZero())
+        return (self.Controller.getBranch() == 1 and self.ALU.getZeroFlag()) or (self.Controller.getBranch() == 2 and self.notZero())
 
     def ImmshiftLeft2(self):
         '''
@@ -213,76 +213,80 @@ class Processor():
         return self.ImmshiftLeft2()+self.PCadder()
 
     def __multiply(self):
-        
-            a = self.RegisterFile.read(0)()
-            b = self.RegisterFile.read(1)()
 
-            val = a*b
-            i = 0
-            ans = ""
-            while (i < 32):
-                i += 1
-                ans = ans + str(val % 2)
-                val = val >> 1
-            ans = int(ans[::-1], 2)
-            self.RegisterFile.hardcode(Splitter.getRD(), ans)
-            self.LO.writeVal(ans)
+        a = self.RegisterFile.read(0)()
+        b = self.RegisterFile.read(1)()
+        # print(a, b, self.splitter.getRD())
+        val = a*b
+        i = 0
+        ans = ""
+        while (i < 32):
+            i += 1
+            ans = ans + str(val % 2)
+            val = val >> 1
+            # print(ans[::-1])
+        ans = int(ans[::-1], 2)
+        self.RegisterFile.hardcode(self.splitter.getRD(), ans)
+        self.LO.writeVal(ans)
 
-            i = 0
-            ans = ""
-            while (i < 32):
-                i += 1
-                ans = ans + str(val % 2)
-                val = val >> 1
-            ans = int(ans[::-1], 2)
-            self.HI.writeVal(ans)
+        i = 0
+        ans = ""
+        while (i < 32):
+            i += 1
+            ans = ans + str(val % 2)
+            val = val >> 1
+            # print(ans[::-1])
+        ans = int(ans[::-1], 2)
+        self.HI.writeVal(ans)
 
     def __divide(self):
-        
-            a = self.RegisterFile.read(0)()
-            b = self.RegisterFile.read(1)()
 
-            val = a//b
-            rem = a % b
+        a = self.RegisterFile.read(0)()
+        b = self.RegisterFile.read(1)()
 
-            i = 0
-            ans = ""
-            while (i < 32):
-                i += 1
-                ans = ans + str(val % 2)
-                val = val >> 1
-            val = int(ans[::-1], 2)
+        val = a//b
+        rem = a % b
 
-            i = 0
-            ans = ""
-            while (i < 32):
-                i += 1
-                ans = ans + str(rem % 2)
-                rem = rem >> 1
-            rem = int(ans[::-1], 2)
+        i = 0
+        ans = ""
+        while (i < 32):
+            i += 1
+            ans = ans + str(val % 2)
+            val = val >> 1
+        val = int(ans[::-1], 2)
 
-            self.HI.writeVal(rem)
-            self.LO.writeVal(val)
+        i = 0
+        ans = ""
+        while (i < 32):
+            i += 1
+            ans = ans + str(rem % 2)
+            rem = rem >> 1
+        rem = int(ans[::-1], 2)
+
+        self.HI.writeVal(rem)
+        self.LO.writeVal(val)
 
     def __magic(self):
-        
+
         # print(self.__status)
         if (self.__status.value == Status.MAGIC2.value):
-            self.RegisterFile.hardcode(Splitter.getRD(), self.HI.readVal())
+            self.RegisterFile.hardcode(
+                self.splitter.getRD(), self.HI.readVal())
 
         elif (self.__status == Status.MAGIC3):
-            self.RegisterFile.hardcode(Splitter.getRD(), self.LO.readVal())
+            self.RegisterFile.hardcode(
+                self.splitter.getRD(), self.LO.readVal())
 
         elif (self.__status == Status.MAGIC1):
             code = self.RegisterFile._regset[2].readVal()
-            #print(code)
+            # print(code)
             if code == 1:
                 print(self.RegisterFile._regset[4].readVal(), end='')
 
             elif code == 4:
-                #print(True)
+                # print(True)
                 address = self.RegisterFile._regset[4].readVal()
-                #print(address)
+                # print(address)
                 string = self.DataMemory.loadString(address)
                 print(string, end='')
 
@@ -299,7 +303,7 @@ class Processor():
                 self.RegisterFile._regset[2].writeVal(val)
 
             elif code == 30:
-                val = time.time() * 1000000
+                val = int(time.time() * 1000000)
                 val = val//1
                 i = 0
                 ans = ""
@@ -315,12 +319,12 @@ class Processor():
         else:
             printErrorandExit("Error status")
 
-    def __instructionRun(self, mode = 0):
+    def __instructionRun(self, mode=0):
         """
             This runs the processor.
         """
         # Instruction Fetch
-        self.RunMCU(mode = mode)
+        self.RunMCU(mode=mode)
         self.__status = self.ALU.run()
 
         if (self.__status == Status.CONTINUE):
@@ -354,9 +358,9 @@ class Processor():
                 self.__instructionRun()
             else:
                 if (self.__clock == untill):
-                    print(f"Reached Breakpoint before clock cycle {self.__clock}")
+                    print(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {self.splitter.getOpcode()} and functin = {self.splitter.getFunct()}")
                 else:
-                    print(f"Program Succesfully terminated at clock cycle {self.__clock}")
+                    print(f"\nProgram Succesfully terminated at clock cycle {self.__clock}")
             self.RegisterFile.changeMode()
 
         elif (mode == 1):
@@ -370,9 +374,9 @@ class Processor():
                 print()
             else:
                 if (self.__clock == untill):
-                    print(f"Reached Breakpoint before clock cycle {self.__clock}")
+                    print(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {self.splitter.getOpcode()} and functin = {self.splitter.getFunct()}")
                 else:
-                    print(f"Program Succesfully terminated at clock cycle {self.__clock}")
+                    print(f"\nProgram Succesfully terminated at clock cycle {self.__clock}")
 
         else:
             print("Invalid mode for running the Processor")
@@ -380,4 +384,4 @@ class Processor():
 
 if __name__ == "__main__":
     P = Processor()
-    P.run(mode = 1)
+    P.run(mode=0)

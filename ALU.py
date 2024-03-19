@@ -32,6 +32,7 @@ class ALU():
             Operation.ADD:           self.__add,
             Operation.SLL:           self.__sll,
             Operation.SRA:           self.__sra,
+            Operation.SRL:           self.__srl,
             Operation.SUB:           self.__sub,
             Operation.LUI:           self.__lui,
             Operation.COMP:           self.__comp,
@@ -69,7 +70,8 @@ class ALU():
         """
             Method for add operation.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)()+self.__inpPorts[1]()(1)()
+        self.__outPorts[1] = self.__inpPorts[0](
+            0)() + self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -77,7 +79,7 @@ class ALU():
         """
             Method for shift left logical operation.
         """
-        self.__outPorts[1] = self.__inpPorts[1]()(1)() << self.__inpPorts[2]()
+        self.__outPorts[1] = (self.__inpPorts[1]()(1)() << self.__inpPorts[2]()) % (2**32-1)
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -88,28 +90,38 @@ class ALU():
         self.__outPorts[1] = self.__inpPorts[0](0)() >> self.__inpPorts[2]()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
+    
+    def __srl(self):
+        """
+            Method for shift right arithmetic operation.
+        """
+        self.__outPorts[1] = abs(self.__inpPorts[0](0)()) >> self.__inpPorts[2]()
+        self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
+        return Status.CONTINUE
 
     def __sub(self):
         """
             Method for sub operation.
         """
         self.__outPorts[1] = self.__inpPorts[0](0)()-self.__inpPorts[1]()(1)()
-        self.__outPorts[0] = int(not(self.__outPorts[1]))
+        self.__outPorts[0] = int(not (self.__outPorts[1]))
         return Status.CONTINUE
 
     def __comp(self):
         """
             Method for algebraic comparison of inputs.
         """
-        self.__outPorts[1] = int(self.__inpPorts[0](0)() < self.__inpPorts[1]()(1)())
+        self.__outPorts[1] = int(self.__inpPorts[0](
+            0)() < self.__inpPorts[1]()(1)())
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
-    
+
     def __unsigned_comp(self):
         """
             Method for algebraic comparison of inputs.
         """
-        self.__outPorts[1] = int(abs(self.__inpPorts[0](0)()) < abs(self.__inpPorts[1]()(1)()))
+        self.__outPorts[1] = int(
+            abs(self.__inpPorts[0](0)()) < abs(self.__inpPorts[1]()(1)()))
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -117,7 +129,8 @@ class ALU():
         """
             Method for bitwise or operation.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)() | self.__inpPorts[1]()(1)()
+        self.__outPorts[1] = self.__inpPorts[0](
+            0)() | self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -125,7 +138,8 @@ class ALU():
         """
             Method for bitwise xor operation.
         """
-        self.__outPorts[1] = self.__inpPorts[0](0)() ^ self.__inpPorts[1]()(1)()
+        self.__outPorts[1] = self.__inpPorts[0](
+            0)() ^ self.__inpPorts[1]()(1)()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 
@@ -178,7 +192,8 @@ class ALU():
     def setInputConnection(self, portID: int, portConnection: Callable):
         typeCheck({portID: int, portConnection: Callable})
         if (portID >= self.__iPC):
-            printErrorandExit(f"Invalid portID for an ALU with {self.__iPC} input ports.")
+            printErrorandExit(f"Invalid portID for an ALU with {
+                              self.__iPC} input ports.")
         self.__inpPorts[portID] = portConnection
 
     def getOutput(self, portID=1):
@@ -188,7 +203,8 @@ class ALU():
         '''
         typeCheck({portID: int})
         if (portID >= self.__oPC):
-            printErrorandExit(f"Invalid portID for an ALU with {self.__oPC} output ports.")
+            printErrorandExit(f"Invalid portID for an ALU with {
+                              self.__oPC} output ports.")
         return self.__outPorts[portID]
 
     def getZeroFlag(self):

@@ -36,6 +36,7 @@ class ALUControl:
 
         self.__rf_operations = {
                    Funct.SLL       :        Operation.SLL,
+                   Funct.SRL       :        Operation.SRL,
                    Funct.SRA       :        Operation.SRA,
                    Funct.XOR       :        Operation.XOR,
                    Funct.SUBU      :        Operation.SUB,

@@ -33,6 +33,7 @@ class Status(Enum):
 class Funct(Enum):
     SLL = "000000"
     SRA = "000011"
+    SRL = "000010"
     XOR = "100110"
     SUBU = "100011"
     ADDU = "100001"
@@ -83,6 +84,7 @@ class Operation(Enum):
     MAG2 = "10001"
     MAG3 = "10010"
     LUI = "10000"
+    SRL = "10001"
 
 
 def typeCheck(typeMap: dict) -> bool:

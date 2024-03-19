@@ -411,7 +411,7 @@ class Stack(Memory):
         Loads the word from the stack.
         """
 
-        typeCheck({location: int, value: str})
+        typeCheck({location: int})
 
         location = STACKPOINTER - location
 
