@@ -11,7 +11,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\gathi\Desktop\build\assets\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
 
 
 def relative_to_assets(path: str) -> Path:
@@ -21,20 +21,20 @@ def relative_to_assets(path: str) -> Path:
 window = Tk()
 
 window.geometry("1434x948")
-window.configure(bg = "#FFFFFF")
+window.configure(bg="#FFFFFF")
 
 
 canvas = Canvas(
     window,
-    bg = "#FFFFFF",
-    height = 948,
-    width = 1434,
-    bd = 0,
-    highlightthickness = 0,
-    relief = "ridge"
+    bg="#FFFFFF",
+    height=948,
+    width=1434,
+    bd=0,
+    highlightthickness=0,
+    relief="ridge"
 )
 
-canvas.place(x = 0, y = 0)
+canvas.place(x=0, y=0)
 canvas.create_rectangle(
     32.0,
     115.0,
@@ -51,7 +51,7 @@ image_1 = canvas.create_image(
     image=image_image_1
 )
 
-canvas.create_text(
+rd_tb = canvas.create_text(
     389.0,
     238.0,
     anchor="nw",
@@ -60,7 +60,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+rr1_tb = canvas.create_text(
     286.0,
     456.0,
     anchor="nw",
@@ -69,7 +69,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+rr2_tb = canvas.create_text(
     286.0,
     498.0,
     anchor="nw",
@@ -78,7 +78,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+rr3_tb = canvas.create_text(
     286.0,
     561.0,
     anchor="nw",
@@ -87,7 +87,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+tb_15_0 = canvas.create_text(
     260.0,
     658.0,
     anchor="nw",
@@ -96,7 +96,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+rd2_tb = canvas.create_text(
     597.0,
     591.0,
     anchor="nw",
@@ -105,7 +105,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+wd_tb = canvas.create_text(
     784.0,
     727.0,
     anchor="nw",
@@ -114,7 +114,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+rd1_tb = canvas.create_text(
     555.0,
     459.0,
     anchor="nw",
@@ -123,7 +123,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+rw_tb = canvas.create_text(
     471.0,
     420.0,
     anchor="nw",
@@ -132,7 +132,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+j_tb = canvas.create_text(
     510.0,
     279.0,
     anchor="nw",
@@ -141,7 +141,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+b_tb = canvas.create_text(
     505.0,
     298.0,
     anchor="nw",
@@ -150,7 +150,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+mr_tb = canvas.create_text(
     513.0,
     315.0,
     anchor="nw",
@@ -159,7 +159,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+mtr_tb = canvas.create_text(
     513.0,
     332.0,
     anchor="nw",
@@ -168,7 +168,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+aluo_tb = canvas.create_text(
     494.0,
     351.0,
     anchor="nw",
@@ -177,7 +177,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+mw_tb = canvas.create_text(
     597.0,
     365.0,
     anchor="nw",
@@ -186,7 +186,7 @@ canvas.create_text(
     font=("Inter", 14 * -1)
 )
 
-canvas.create_text(
+alus_tb = canvas.create_text(
     588.0,
     415.0,
     anchor="nw",
@@ -214,34 +214,56 @@ canvas.create_rectangle(
 entry_image_1 = PhotoImage(
     file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(
-    513.5,
+    757.0,
     850.0,
     image=entry_image_1
 )
-entry_1 = Entry(
+
+kernel_input = entry_1 = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0
 )
 entry_1.place(
-    x=38.0,
-    y=766.0,
-    width=951.0,
-    height=166.0
+    x=588.0,
+    y=767.0,
+    width=338.0,
+    height=164.0
+)
+
+entry_image_2 = PhotoImage(
+    file=relative_to_assets("entry_2.png"))
+entry_bg_2 = canvas.create_image(
+    304.5,
+    851.5,
+    image=entry_image_2
+)
+
+kernel_output = entry_2 = Text(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0
+)
+entry_2.place(
+    x=40.0,
+    y=770.0,
+    width=529.0,
+    height=161.0
 )
 
 canvas.create_rectangle(
-    311.0,
+    528.0,
     32.0,
-    1111.0,
+    866.0,
     87.0,
     fill="#D9D9D9",
     outline="")
 
 button_image_1 = PhotoImage(
     file=relative_to_assets("button_1.png"))
-button_1 = Button(
+play_button = button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
@@ -249,7 +271,7 @@ button_1 = Button(
     relief="flat"
 )
 button_1.place(
-    x=341.0,
+    x=597.0,
     y=39.0,
     width=40.0,
     height=40.0
@@ -257,7 +279,7 @@ button_1.place(
 
 button_image_2 = PhotoImage(
     file=relative_to_assets("button_2.png"))
-button_2 = Button(
+play_one_step_button = button_2 = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
@@ -265,7 +287,7 @@ button_2 = Button(
     relief="flat"
 )
 button_2.place(
-    x=481.4000244140625,
+    x=737.4000244140625,
     y=39.0,
     width=40.0,
     height=40.0
@@ -273,7 +295,7 @@ button_2.place(
 
 button_image_3 = PhotoImage(
     file=relative_to_assets("button_3.png"))
-button_3 = Button(
+input_text = button_3 = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
@@ -281,109 +303,72 @@ button_3 = Button(
     relief="flat"
 )
 button_3.place(
-    x=621.7999877929688,
-    y=39.0,
+    x=938.0,
+    y=831.0,
     width=40.0,
     height=40.0
 )
 
-button_image_4 = PhotoImage(
-    file=relative_to_assets("button_4.png"))
-button_4 = Button(
-    image=button_image_4,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_4 clicked"),
-    relief="flat"
-)
-button_4.place(
-    x=762.199951171875,
-    y=38.99999999999999,
-    width=40.0,
-    height=40.00000000000001
-)
 
-button_image_5 = PhotoImage(
-    file=relative_to_assets("button_5.png"))
-button_5 = Button(
-    image=button_image_5,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_5 clicked"),
-    relief="flat"
-)
-button_5.place(
-    x=902.5999755859375,
-    y=39.0,
-    width=40.0,
-    height=40.0
-)
+a, b = 115.0, 132.0
+registers = []  # [name, number, value]
+y = 117.0
+for i in range(0, 34):
 
-button_image_6 = PhotoImage(
-    file=relative_to_assets("button_6.png"))
-button_6 = Button(
-    image=button_image_6,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_6 clicked"),
-    relief="flat"
-)
-button_6.place(
-    x=1043.0,
-    y=39.0,
-    width=40.0,
-    height=40.0
-)
+    canvas.create_rectangle(
+        1275.0,
+        a,
+        1416.0,
+        b,
+        fill="#A3A3A3",
+        outline="")
 
-canvas.create_rectangle(
-    1275.0,
-    115.0,
-    1416.0,
-    132.0,
-    fill="#FFFFFF",
-    outline="")
+    canvas.create_rectangle(
+        999.0,
+        a,
+        1138.0,
+        b,
+        fill="#A3A3A3",
+        outline="")
 
-canvas.create_rectangle(
-    999.0,
-    115.0,
-    1138.0,
-    132.0,
-    fill="#FFFFFF",
-    outline="")
+    canvas.create_rectangle(
+        1137.0,
+        a,
+        1276.0,
+        b,
+        fill="#A3A3A3",
+        outline="")
 
-canvas.create_rectangle(
-    1137.0,
-    115.0,
-    1276.0,
-    132.0,
-    fill="#FFFFFF",
-    outline="")
+    registers.append([canvas.create_text(
+        1054.5,
+        y,
+        anchor="nw",
+        text="Name",
+        fill="#000000",
+        font=("Inter", 10 * -1)
+    ),
 
-canvas.create_text(
-    1331.5,
-    117.0,
-    anchor="nw",
-    text="Value",
-    fill="#000000",
-    font=("Inter", 10 * -1)
-)
+        canvas.create_text(
+        1188.5,
+        y,
+        anchor="nw",
+        text="Number",
+        fill="#000000",
+        font=("Inter", 10 * -1)
+    ),
 
-canvas.create_text(
-    1188.5,
-    117.0,
-    anchor="nw",
-    text="Number",
-    fill="#000000",
-    font=("Inter", 10 * -1)
-)
+        canvas.create_text(
+        1331.5,
+        y,
+        anchor="nw",
+        text="Value",
+        fill="#000000",
+        font=("Inter", 10 * -1)
+    )])
+    y += (133.0 - 117.0)
 
-canvas.create_text(
-    1054.5,
-    117.0,
-    anchor="nw",
-    text="Name",
-    fill="#000000",
-    font=("Inter", 10 * -1)
-)
+    a += 131.0-115.0
+    b += 148.0-132.0
+
 window.resizable(False, False)
 window.mainloop()
