@@ -7,6 +7,7 @@ from RegSet import *
 from Register import *
 from Utilities import *
 from Splitter import *
+from logic import *
 import time
 
 
@@ -72,6 +73,10 @@ class Processor():
         self.__connectPCSelectMux()
 
         self.__connectALU()
+
+        self.__clock = 0
+        self.__mode = 0
+        self.__untill = 0
 
     def __FetchData(self):
         return self.InstructionMemory.loadWord(self.PC.getVal())
@@ -319,6 +324,12 @@ class Processor():
         else:
             printErrorandExit("Error status")
 
+
+    def dumpRegToGUI(self):
+        lst = self.RegisterFile.dumpToGUI()
+        lst.extend([(self.PC.getVal(),str(self.PC)), (self.HI.getVal(), str(self.HI)), (self.LO.getVal(), str(self.LO))])
+        return lst
+
     def __instructionRun(self, mode=0):
         """
             This runs the processor.
@@ -350,7 +361,9 @@ class Processor():
             This runs the processor.
         """
         self.__clock = 0
-
+        self.__mode = mode
+        self.__untill = untill
+        
         if (mode == 0):
             self.RegisterFile.changeMode()
             while (self.__clock < untill and self.__status != Status.EXIT):
@@ -378,6 +391,11 @@ class Processor():
                 else:
                     print(f"\nProgram Succesfully terminated at clock cycle {self.__clock}")
 
+        elif (mode == 2):#############
+            self.__myGUI = logic()
+            self.__myGUI.run(self)
+
+        
         else:
             print("Invalid mode for running the Processor")
 
