@@ -30,7 +30,12 @@ class RegSet():
         self.__re = self._ground
         self.__mode = 1
         
-
+    def dumpToGUI(self):
+        lst = []
+        for i in self._regset:
+            lst.append((i.getVal(),i.read())
+        return lst
+        
     def hardcode(self, num, val):
 
         self._regset[num].writeVal(val)
@@ -124,15 +129,16 @@ class RegSet():
         if (self.__re() == 1):
             return ((self._regset[regNumber]).getVal)
         else:
-            if (self.__mode):
+            if (self.__mode==1):
                 print("Reading is not enabled.")
             return self._ground
 
     def dump(self):
         print()
+        print("Register Values:")
         n = 0
         for i in self._regset:
-            print(f"${n}: {i.getVal()}", end=" ")
+            print(f"${n}: {i.getVal()}")
             n += 1
         print()
 
@@ -158,15 +164,15 @@ class RegSet():
             writeData = int(writeData,2)
 
         if (self.__we() == 1):
-            if (self.__mode):
+            if (self.__mode==1):
                 print(f"Writing value {writeData} to ${regNumber}.")
             self._regset[regNumber].writeVal(writeData)
         else:
-            if (self.__mode):
+            if (self.__mode==1):
                 print("Write is not enabled")
             return self._ground
 
-        if self.__mode:
+        if self.__mode==1:
             print()
 
 
