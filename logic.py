@@ -1,5 +1,7 @@
 import gui
 
+canvas = gui.canvas
+
 registers = gui.registers  # [name, number, value]
 
 rd_tb = gui.rd_tb
@@ -19,6 +21,17 @@ aluo_tb = gui.aluo_tb
 mw_tb = gui.mw_tb
 alus_tb = gui.alus_tb
 
+
+def update_text():
+    text = "hello world"
+    canvas.itemconfig(j_tb, text=text)
+
+
 play_button = gui.play_button
 play_one_step_button = gui.play_one_step_button
 input_text = gui.input_text
+
+play_button.configure(command=update_text)
+
+gui.window.resizable(False, False)
+gui.window.mainloop()

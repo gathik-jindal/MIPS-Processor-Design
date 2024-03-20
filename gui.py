@@ -369,6 +369,3 @@ for i in range(0, 34):
 
     a += 131.0-115.0
     b += 148.0-132.0
-
-window.resizable(False, False)
-window.mainloop()
