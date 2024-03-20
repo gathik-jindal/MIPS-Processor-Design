@@ -1,6 +1,15 @@
 import gui
 import tkinter as tk
-import Processor
+from Processor import *
+from ALU import *
+from ALU_Control import *
+from Control import *
+from Memory import *
+from Multiplexer import *
+from RegSet import *
+from Register import *
+from Utilities import *
+from Splitter import *
 
 
 class logic:
@@ -34,28 +43,89 @@ class logic:
         self.kernel_output.configure(state=tk.DISABLED)
 
         self.play_button = gui.play_button
+        self.play_button.configure(command=self.play)
         self.play_one_step_button = gui.play_one_step_button
+        self.play_one_step_button.configure(command=self.play_1)
         self.input_text = gui.input_text
         self.input_text.configure(command=self.get_KI)
+
+        self.kernInputWait = tk.IntVar()
+        self.playOneWait = tk.IntVar()
+
+    def dumpkern(self, data):
+        self.dump_reg_image()
+        self.kernel_output.configure(state=tk.NORMAL)
+        self.kernel_output.insert(tk.END, data)
+        self.kernel_output.configure(state=tk.DISABLED)
+
+    def play(self):
+        self.__clock = 0
+        self.__status = Status.CONTINUE
+        self.play_button.configure(command=lambda: 0)
+        self.play_one_step_button.configure(command=lambda: 0)
+        while (self.__clock < self.untill and self.__status != Status.EXIT):
+            self.dump_reg_image()
+            self.__clock += 1
+            self.proc.callInstructionRun()
+            self.__status = self.proc.getStatus()
+        else:
+            if (self.__clock == self.untill):
+                self.dumpkern(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {
+                    self.proc.splitter.getOpcode()} and functin = {self.proc.splitter.getFunct()}\n")
+            else:
+                self.dumpkern(f"\nProgram Succesfully terminated at clock cycle {
+                    self.__clock}\n")
+
+        self.play_button.configure(command=lambda: self.play())
+        self.play_one_step_button.configure(command=self.dump_reg_image)
+
+    def play_1(self):
+        self.__clock = 0
+        self.__status = Status.CONTINUE
+        self.play_button.configure(command=lambda: 0)
+        self.play_one_step_button.configure(
+            command=lambda: self.playOneWait.set(1))
+        while (self.__clock < self.untill and self.__status != Status.EXIT):
+            self.dump_reg_image()
+            self.play_one_step_button.wait_variable(self.playOneWait)
+            self.playOneWait.set(0)
+            self.__clock += 1
+            self.proc.callInstructionRun()
+            self.__status = self.proc.getStatus()
+        else:
+            if (self.__clock == self.untill):
+                self.dumpkern(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {
+                    self.proc.splitter.getOpcode()} and functin = {self.proc.splitter.getFunct()}\n")
+            else:
+                self.dumpkern(f"\nProgram Succesfully terminated at clock cycle {
+                    self.__clock}\n")
+
+        self.play_button.configure(command=lambda: self.play())
         self.play_one_step_button.configure(command=self.dump_reg_image)
 
     def dump_reg_image(self):
         text = "hello world"
         self.canvas.itemconfig(self.j_tb, text=text)
 
-        l = '0'*len(self.registers)
+        regs = self.proc.dumpRegToGUI()
         for i in range(len(self.registers)):
-            self.canvas.itemconfig(self.registers[i][2], text=l[i])
+            self.canvas.itemconfig(self.registers[i][2], text=regs[i][0])
+
+    def getKernIn(self):
+        self.input_text.wait_variable(self.kernInputWait)
+        self.kernInputWait.set(0)
+        return self.l[-1]
 
     def get_KI(self):
         text = self.kernel_input.get() + '\n'
-        self.kernel_output.configure(state=tk.NORMAL)
-        self.kernel_output.insert(tk.END, text)
-        self.kernel_output.configure(state=tk.DISABLED)
+        self.dumpkern(text)
         self.l.append(text)
         print(text, end='')
+        self.kernel_input.delete(0, tk.END)
+        self.kernInputWait.set(1)
 
-    def run(self, proc):
+    def run(self, proc, untill):
+        self.untill = untill
         self.proc = proc
         gui.window.resizable(False, False)
         gui.window.mainloop()

@@ -272,6 +272,21 @@ class Processor():
         self.HI.writeVal(rem)
         self.LO.writeVal(val)
 
+    def toPrint(self, val):
+        if self.__mode == 2:
+            self.__myGUI.dumpkern(val)
+        else:
+            print(val, end='')
+
+    def toInput(self):
+        if (self.__mode == 2):
+            return self.__myGUI.getKernIn()
+        else:
+            return input()
+
+    def getStatus(self):
+        return self.__status
+
     def __magic(self):
 
         # print(self.__status)
@@ -287,14 +302,14 @@ class Processor():
             code = self.RegisterFile._regset[2].readVal()
             # print(code)
             if code == 1:
-                print(self.RegisterFile._regset[4].readVal(), end='')
+                self.toPrint(self.RegisterFile._regset[4].readVal())
 
             elif code == 4:
                 # print(True)
                 address = self.RegisterFile._regset[4].readVal()
                 # print(address)
                 string = self.DataMemory.loadString(address)
-                print(string, end='')
+                self.toPrint(string)
 
             elif code == 9:
                 n = self.RegisterFile._regset[4].readVal()
@@ -305,7 +320,7 @@ class Processor():
                 self.__status = Status.EXIT
 
             elif code == 5:
-                val = int(input())
+                val = int(self.toInput())
                 self.RegisterFile._regset[2].writeVal(val)
 
             elif code == 30:
@@ -333,6 +348,9 @@ class Processor():
 
     def dumpImgToGUI(self):
         pass
+
+    def callInstructionRun(self, mode=0):
+        return self.__instructionRun(mode)
 
     def __instructionRun(self, mode=0):
         """
@@ -410,7 +428,7 @@ class Processor():
         elif (mode == 2):
             self.RegisterFile.changeMode(2)
             self.__myGUI = logic()
-            self.__myGUI.run(self)
+            self.__myGUI.run(self, self.__untill)
             self.RegisterFile.changeMode(1)
 
         else:
@@ -419,4 +437,4 @@ class Processor():
 
 if __name__ == "__main__":
     P = Processor()
-    P.run(mode=0)
+    P.run(mode=2)
