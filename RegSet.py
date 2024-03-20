@@ -33,7 +33,7 @@ class RegSet():
     def dumpToGUI(self):
         lst = []
         for i in self._regset:
-            lst.append((i.getVal(),str(i))
+            lst.append((i.getVal(),str(i)))
         return lst
         
     def hardcode(self, num, val):
@@ -49,8 +49,8 @@ class RegSet():
 
         return 0
 
-    def changeMode(self):
-        self.__mode = 1 - self.__mode
+    def changeMode(self, val):
+        self.__mode = val
 
     def insertReg(self, pos:int, size:int, defaultVal = 0):
         

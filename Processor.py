@@ -407,6 +407,12 @@ class Processor():
                     print(f"\nProgram Succesfully terminated at clock cycle {
                           self.__clock}")
 
+        elif (mode == 2):
+            self.RegisterFile.changeMode(2)
+            self.__myGUI = logic()
+            self.__myGUI.run(self)
+            self.RegisterFile.changeMode(1)
+
         else:
             print("Invalid mode for running the Processor")
 
