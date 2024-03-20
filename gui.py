@@ -7,7 +7,7 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, RIGHT, Y, Scrollbar
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -240,6 +240,14 @@ entry_bg_2 = canvas.create_image(
     image=entry_image_2
 )
 
+
+def scroll_kernel_output(*args):
+    kernel_output.yview(*args)
+
+
+# Create the Scrollbar widget
+scrollbar = Scrollbar(command=scroll_kernel_output)
+
 kernel_output = entry_2 = Text(
     bd=0,
     bg="#FFFFFF",
@@ -252,6 +260,13 @@ entry_2.place(
     width=529.0,
     height=161.0
 )
+
+# Link the Text widget with the Scrollbar
+kernel_output.config(yscrollcommand=scrollbar.set)
+
+# Pack the widgets
+scrollbar.place(x=569.0, y=770.0, height=161.0)
+scrollbar.pack(side=RIGHT, fill=Y)
 
 canvas.create_rectangle(
     528.0,
@@ -313,7 +328,46 @@ button_3.place(
 a, b = 115.0, 132.0
 registers = []  # [name, number, value]
 y = 117.0
-for i in range(0, 34):
+
+l = [
+    "$zero",
+    "$at",
+    "$v0",
+    "$v1",
+    "$a0",
+    "$a1",
+    "$a2",
+    "$a3",
+    "$t0",
+    "$t1",
+    "$t2",
+    "$t3",
+    "$t4",
+    "$t5",
+    "$t6",
+    "$t7",
+    "$s0",
+    "$s1",
+    "$s2",
+    "$s3",
+    "$s4",
+    "$s5",
+    "$s6",
+    "$s7",
+    "$t8",
+    "$t9",
+    "$k0",
+    "$k1",
+    "$gp",
+    "$sp",
+    "$fp",
+    "$ra",
+    "pc",
+    "hi",
+    "lo"
+]
+
+for i in range(0, 36):
 
     canvas.create_rectangle(
         1275.0,
@@ -343,7 +397,7 @@ for i in range(0, 34):
         1054.5,
         y,
         anchor="nw",
-        text="Name",
+        text=f"{l[i - 1]}" if i > 0 else "",
         fill="#000000",
         font=("Inter", 10 * -1)
     ),
@@ -352,7 +406,7 @@ for i in range(0, 34):
         1188.5,
         y,
         anchor="nw",
-        text="Number",
+        text=f"{i - 1}" if i < 33 else "",
         fill="#000000",
         font=("Inter", 10 * -1)
     ),
@@ -361,7 +415,7 @@ for i in range(0, 34):
         1331.5,
         y,
         anchor="nw",
-        text="Value",
+        text="0",
         fill="#000000",
         font=("Inter", 10 * -1)
     )])
@@ -369,3 +423,7 @@ for i in range(0, 34):
 
     a += 131.0-115.0
     b += 148.0-132.0
+
+canvas.itemconfig(registers[0][1], text="Number")
+canvas.itemconfig(registers[0][0], text="Name")
+canvas.itemconfig(registers[0][2], text="value")

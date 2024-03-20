@@ -1,20 +1,36 @@
-import tkinter as tk
+from tkinter import *
+
+root = Tk()
+root.geometry("300x300")
+root.title(" Q&A ")
 
 
-def update_text():
-    canvas.itemconfig(text_id, text="New Text")
+def Take_input():
+    INPUT = inputtxt.get("1.0", "end-1c")
+    print(INPUT)
+    if (INPUT == "120"):
+        Output.insert(END, 'Correct')
+    else:
+        Output.insert(END, "Wrong answer")
 
 
-root = tk.Tk()
-canvas = tk.Canvas(root, width=200, height=100)
-canvas.pack()
+l = Label(text="What is 24 * 5 ? ")
+inputtxt = Text(root, height=10,
+                width=25,
+                bg="light yellow")
 
-# Initial text on canvas
-text_id = canvas.create_text(
-    100, 50, text="Original Text", font=("Helvetica", 12))
+Output = Text(root, height=5,
+              width=25,
+              bg="light cyan")
 
-# Button to update text
-update_button = tk.Button(root, text="Update Text", command=update_text)
-update_button.pack()
+Display = Button(root, height=2,
+                 width=20,
+                 text="Show",
+                 command=lambda: Take_input())
 
-root.mainloop()
+l.pack()
+inputtxt.pack()
+Display.pack()
+Output.pack()
+
+mainloop()

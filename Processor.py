@@ -38,7 +38,8 @@ class Processor():
         #     "Enter global data file name (Has to be in memory folder): "), input("Enter stack file name (Has to be in memory folder): "))
 
         self.InstructionMemory = InstructionMemory("FindRankMIPSText.txt")
-        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
+                                     "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
 
         self.ALUController = ALUControl(
             self.Controller.getALUOp, self.Controller.setpcSelect)
@@ -358,9 +359,11 @@ class Processor():
                 self.__instructionRun()
             else:
                 if (self.__clock == untill):
-                    print(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {self.splitter.getOpcode()} and functin = {self.splitter.getFunct()}")
+                    print(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {
+                          self.splitter.getOpcode()} and functin = {self.splitter.getFunct()}")
                 else:
-                    print(f"\nProgram Succesfully terminated at clock cycle {self.__clock}")
+                    print(f"\nProgram Succesfully terminated at clock cycle {
+                          self.__clock}")
             self.RegisterFile.changeMode()
 
         elif (mode == 1):
@@ -374,9 +377,11 @@ class Processor():
                 print()
             else:
                 if (self.__clock == untill):
-                    print(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {self.splitter.getOpcode()} and functin = {self.splitter.getFunct()}")
+                    print(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {
+                          self.splitter.getOpcode()} and functin = {self.splitter.getFunct()}")
                 else:
-                    print(f"\nProgram Succesfully terminated at clock cycle {self.__clock}")
+                    print(f"\nProgram Succesfully terminated at clock cycle {
+                          self.__clock}")
 
         else:
             print("Invalid mode for running the Processor")
