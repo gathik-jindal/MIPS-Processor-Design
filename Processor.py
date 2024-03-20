@@ -7,6 +7,7 @@ from RegSet import *
 from Register import *
 from Utilities import *
 from Splitter import *
+from logic import *
 import time
 
 
@@ -73,6 +74,10 @@ class Processor():
         self.__connectPCSelectMux()
 
         self.__connectALU()
+
+        self.__clock = 0
+        self.__mode = 0
+        self.__untill = 0
 
     def __FetchData(self):
         return self.InstructionMemory.loadWord(self.PC.getVal())
@@ -320,17 +325,32 @@ class Processor():
         else:
             printErrorandExit("Error status")
 
+    def dumpRegToGUI(self):
+        lst = self.RegisterFile.dumpToGUI()
+        lst.extend([(self.PC.getVal(), str(self.PC)), (self.HI.getVal(), str(
+            self.HI)), (self.LO.getVal(), str(self.LO))])
+        return lst
+
+    def dumpImgToGUI(self):
+        pass
+
     def __instructionRun(self, mode=0):
         """
             This runs the processor.
         """
-        # Instruction Fetch
+
+        # Instruction Fetch and Instruction Decode
         self.RunMCU(mode=mode)
+
+        # Execute stage
         self.__status = self.ALU.run()
 
+        # MemAccessStage
         if (self.__status == Status.CONTINUE):
             self.WriteData()
             self.ReadData()
+
+            # Reg Write phase
             self.RegisterFile.write()
 
         elif (self.__status == Status.EXIT):
@@ -344,6 +364,8 @@ class Processor():
 
         else:
             self.__magic()
+
+        # Next phase instruction fetch
         self.PC.writeVal(self.PCSelectMux.getData()()())
 
     def run(self, mode=0, untill=1000000000):
@@ -351,9 +373,11 @@ class Processor():
             This runs the processor.
         """
         self.__clock = 0
+        self.__mode = mode
+        self.__untill = untill
 
         if (mode == 0):
-            self.RegisterFile.changeMode()
+            self.RegisterFile.changeMode(0)
             while (self.__clock < untill and self.__status != Status.EXIT):
                 self.__clock += 1
                 self.__instructionRun()
@@ -364,7 +388,7 @@ class Processor():
                 else:
                     print(f"\nProgram Succesfully terminated at clock cycle {
                           self.__clock}")
-            self.RegisterFile.changeMode()
+            self.RegisterFile.changeMode(1)
 
         elif (mode == 1):
             while (self.__clock < untill and self.__status != Status.EXIT):
