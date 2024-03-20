@@ -104,8 +104,24 @@ class logic:
         self.play_one_step_button.configure(command=self.dump_reg_image)
 
     def dump_reg_image(self):
-        text = "hello world"
-        self.canvas.itemconfig(self.j_tb, text=text)
+        lst = self.proc.dumpImgToGUI()
+
+        self.canvas.itemconfig(self.rd_tb, text=lst[0])
+        self.canvas.itemconfig(self.rr1_tb, text=lst[11])
+        self.canvas.itemconfig(self.rr2_tb, text=lst[12])
+        self.canvas.itemconfig(self.rr3_tb, text=lst[13])
+        self.canvas.itemconfig(self.tb_15_0, text=lst[14])
+        self.canvas.itemconfig(self.rd2_tb, text=lst[10])
+        self.canvas.itemconfig(self.wd_tb, text=lst[15])
+        self.canvas.itemconfig(self.rd1_tb, text=lst[9])
+        self.canvas.itemconfig(self.rw_tb, text=lst[7])
+        self.canvas.itemconfig(self.j_tb, text=lst[8])
+        self.canvas.itemconfig(self.b_tb, text=lst[1])
+        self.canvas.itemconfig(self.mr_tb, text=lst[2])
+        self.canvas.itemconfig(self.mtr_tb, text=lst[4])
+        self.canvas.itemconfig(self.aluo_tb, text=lst[5])
+        self.canvas.itemconfig(self.mw_tb, text=lst[3])
+        self.canvas.itemconfig(self.alus_tb, text=lst[6])
 
         regs = self.proc.dumpRegToGUI()
         for i in range(len(self.registers)):

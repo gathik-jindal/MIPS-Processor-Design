@@ -157,17 +157,16 @@ class Control():
             
     def dumpToGUI(self):
         lst=[]
-        lst.append([self.__state[0], 
-                    self.__state[1], 
-                    self.__state[2], 
-                    self.__state[3], 
-                    self.__state[4], 
-                    self.__state[5], 
-                    self.__state[6], 
-                    self.__state[7],
-                    self.__state[8],
-                    self.__state[9], 
-                    self.__state[10]])
+        lst.extend([self.__state[0], # regDest
+                    self.__state[1], # branch
+                    self.__state[2], # MemRead
+                    self.__state[3], # MemWrite
+                    self.__state[4], # wb mux
+                    ALUOp(self.__state[5]).value, # aluo
+                    self.__state[6], # alus
+                    self.__state[7], # regwrite
+                    self.__state[10] # jump
+                    ])
         return lst
 
 

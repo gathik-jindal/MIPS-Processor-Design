@@ -38,9 +38,20 @@ class Processor():
         # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, input("Enter data file name (Has to be in memory folder): "), input(
         #     "Enter global data file name (Has to be in memory folder): "), input("Enter stack file name (Has to be in memory folder): "))
 
+        # ------------------rank----------------------
         self.InstructionMemory = InstructionMemory("FindRankMIPSText.txt")
         self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
                                      "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+
+        # ------------------ll----------------------
+        # self.InstructionMemory = InstructionMemory("LinkedListTextBin.txt")
+        # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
+        #                              "LinkedListDataBin.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+
+        # ------------------MergeSort----------------------
+        # self.InstructionMemory = InstructionMemory("text.txt")
+        # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
+        #                              "data.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
 
         self.ALUController = ALUControl(
             self.Controller.getALUOp, self.Controller.setpcSelect)
@@ -342,14 +353,16 @@ class Processor():
 
     def dumpRegToGUI(self):
         lst = self.RegisterFile.dumpToGUI()
-        lst.extend([(self.PC.getVal(), str(self.PC)), (self.HI.getVal(), str(self.HI)), (self.LO.getVal(), str(self.LO))])
+        lst.extend([(self.PC.getVal(), str(self.PC)), (self.HI.getVal(), str(
+            self.HI)), (self.LO.getVal(), str(self.LO))])
         return lst
 
     def dumpImgToGUI(self):
         lst = self.Controller.dumpToGUI()
         lst.extend([self.RegisterFile.read()(), self.RegisterFile.read(1)()])
-        lst.extend([self.splitter.getRS(),self.splitter.getRD(),self.splitter.getRT(), self.splitter.getImm()])
-        lst.append()
+        lst.extend([self.splitter.getRS(), self.splitter.getRD(),
+                   self.splitter.getRT(), self.splitter.getImm()])
+        lst.append(self.WriteBackMux.getData()())
         return lst
 
     def callInstructionRun(self, mode=0):
@@ -371,7 +384,7 @@ class Processor():
             self.WriteData()
             self.ReadData()
 
-            # Reg Write phase
+            # Reg Writeback phase
             self.RegisterFile.write()
 
         elif (self.__status == Status.EXIT):
