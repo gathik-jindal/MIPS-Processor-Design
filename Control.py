@@ -154,6 +154,21 @@ class Control():
                 RegRead Signal: {self.__state[8]}\n\
                 BranchSelect Mux: {self.__state[9]}\n\
                 pcSelect Mux: {self.__state[10]}\n")
+            
+    def dumpToGUI(self):
+        lst=[]
+        lst.append([self.__state[0], 
+                    self.__state[1], 
+                    self.__state[2], 
+                    self.__state[3], 
+                    self.__state[4], 
+                    self.__state[5], 
+                    self.__state[6], 
+                    self.__state[7],
+                    self.__state[8],
+                    self.__state[9], 
+                    self.__state[10]])
+        return lst
 
 
 

@@ -342,12 +342,15 @@ class Processor():
 
     def dumpRegToGUI(self):
         lst = self.RegisterFile.dumpToGUI()
-        lst.extend([(self.PC.getVal(), str(self.PC)), (self.HI.getVal(), str(
-            self.HI)), (self.LO.getVal(), str(self.LO))])
+        lst.extend([(self.PC.getVal(), str(self.PC)), (self.HI.getVal(), str(self.HI)), (self.LO.getVal(), str(self.LO))])
         return lst
 
     def dumpImgToGUI(self):
-        pass
+        lst = self.Controller.dumpToGUI()
+        lst.extend([self.RegisterFile.read()(), self.RegisterFile.read(1)()])
+        lst.extend([self.splitter.getRS(),self.splitter.getRD(),self.splitter.getRT(), self.splitter.getImm()])
+        lst.append()
+        return lst
 
     def callInstructionRun(self, mode=0):
         return self.__instructionRun(mode)
