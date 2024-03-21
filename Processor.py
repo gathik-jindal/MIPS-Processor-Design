@@ -39,14 +39,14 @@ class Processor():
         #     "Enter global data file name (Has to be in memory folder): "), input("Enter stack file name (Has to be in memory folder): "))
 
         # ------------------rank----------------------
-        self.InstructionMemory = InstructionMemory("FindRankMIPSText.txt")
-        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
-                                     "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+        # self.InstructionMemory = InstructionMemory("FindRankMIPSText.txt")
+        # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
+        #                              "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
 
         # ------------------ll----------------------
-        # self.InstructionMemory = InstructionMemory("LinkedListTextBin.txt")
-        # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
-        #                              "LinkedListDataBin.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+        self.InstructionMemory = InstructionMemory("LinkedListTextBin.txt")
+        self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
+                                     "LinkedListDataBin.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
 
         # ------------------MergeSort----------------------
         # self.InstructionMemory = InstructionMemory("text.txt")
