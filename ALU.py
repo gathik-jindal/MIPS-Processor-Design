@@ -95,7 +95,11 @@ class ALU():
         """
             Method for shift right arithmetic operation.
         """
-        self.__outPorts[1] = abs(self.__inpPorts[0](0)()) >> self.__inpPorts[2]()
+        a = self.__inpPorts[0](0)()
+        if a < 0:
+            a = a + 2**31 
+            a = a + 2**31
+        self.__outPorts[1] = a >> self.__inpPorts[2]()
         self.__outPorts[0] = ((self.__outPorts[1] and 1)+1) % 2
         return Status.CONTINUE
 

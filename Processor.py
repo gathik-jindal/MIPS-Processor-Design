@@ -38,9 +38,20 @@ class Processor():
         # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite, input("Enter data file name (Has to be in memory folder): "), input(
         #     "Enter global data file name (Has to be in memory folder): "), input("Enter stack file name (Has to be in memory folder): "))
 
-        self.InstructionMemory = InstructionMemory("FindRankMIPSText.txt")
+        # ------------------rank----------------------
+        # self.InstructionMemory = InstructionMemory("FindRankMIPSText.txt")
+        # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
+        #                              "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+
+        # ------------------ll----------------------
+        self.InstructionMemory = InstructionMemory("LinkedListTextBin.txt")
         self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
-                                     "FindRankMIPSData.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+                                     "LinkedListDataBin.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
+
+        # ------------------MergeSort----------------------
+        # self.InstructionMemory = InstructionMemory("text.txt")
+        # self.DataMemory = DataMemory(self.Controller.getMemRead, self.Controller.getMemWrite,
+        #                              "data.txt", "LinkedListHeapBin.txt", "LinkedListStackBin.txt")
 
         self.ALUController = ALUControl(
             self.Controller.getALUOp, self.Controller.setpcSelect)
@@ -272,6 +283,21 @@ class Processor():
         self.HI.writeVal(rem)
         self.LO.writeVal(val)
 
+    def toPrint(self, val):
+        if self.__mode == 2:
+            self.__myGUI.dumpkern(val)
+        else:
+            print(val, end='')
+
+    def toInput(self):
+        if (self.__mode == 2):
+            return self.__myGUI.getKernIn()
+        else:
+            return input()
+
+    def getStatus(self):
+        return self.__status
+
     def __magic(self):
 
         # print(self.__status)
@@ -287,14 +313,14 @@ class Processor():
             code = self.RegisterFile._regset[2].readVal()
             # print(code)
             if code == 1:
-                print(self.RegisterFile._regset[4].readVal(), end='')
+                self.toPrint(self.RegisterFile._regset[4].readVal())
 
             elif code == 4:
                 # print(True)
                 address = self.RegisterFile._regset[4].readVal()
                 # print(address)
                 string = self.DataMemory.loadString(address)
-                print(string, end='')
+                self.toPrint(string)
 
             elif code == 9:
                 n = self.RegisterFile._regset[4].readVal()
@@ -305,7 +331,7 @@ class Processor():
                 self.__status = Status.EXIT
 
             elif code == 5:
-                val = int(input())
+                val = int(self.toInput())
                 self.RegisterFile._regset[2].writeVal(val)
 
             elif code == 30:
@@ -332,7 +358,15 @@ class Processor():
         return lst
 
     def dumpImgToGUI(self):
-        pass
+        lst = self.Controller.dumpToGUI()
+        lst.extend([self.RegisterFile.read()(), self.RegisterFile.read(1)()])
+        lst.extend([self.splitter.getRS(), self.splitter.getRD(),
+                   self.splitter.getRT(), self.splitter.getImm()])
+        lst.append(self.WriteBackMux.getData()())
+        return lst
+
+    def callInstructionRun(self, mode=0):
+        return self.__instructionRun(mode)
 
     def __instructionRun(self, mode=0):
         """
@@ -350,7 +384,7 @@ class Processor():
             self.WriteData()
             self.ReadData()
 
-            # Reg Write phase
+            # Reg Writeback phase
             self.RegisterFile.write()
 
         elif (self.__status == Status.EXIT):
@@ -410,7 +444,7 @@ class Processor():
         elif (mode == 2):
             self.RegisterFile.changeMode(2)
             self.__myGUI = logic()
-            self.__myGUI.run(self)
+            self.__myGUI.run(self, self.__untill)
             self.RegisterFile.changeMode(1)
 
         else:
@@ -419,4 +453,4 @@ class Processor():
 
 if __name__ == "__main__":
     P = Processor()
-    P.run(mode=0)
+    P.run(mode=2)
