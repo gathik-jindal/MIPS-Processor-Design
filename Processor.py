@@ -359,7 +359,7 @@ class Processor():
 
     def dumpImgToGUI(self):
         lst = self.Controller.dumpToGUI()
-        lst.extend([self.RegisterFile.read()(), self.RegisterFile.read(1)()])
+        lst.extend([self.RegisterFile.read(0)(), self.RegisterFile.read(1)()])
         lst.extend([self.splitter.getRS(), self.splitter.getRD(),
                    self.splitter.getRT(), self.splitter.getImm()])
         lst.append(self.WriteBackMux.getData()())

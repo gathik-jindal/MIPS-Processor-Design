@@ -53,7 +53,6 @@ class logic:
         self.playOneWait = tk.IntVar()
 
     def dumpkern(self, data):
-        self.dump_reg_image()
         self.kernel_output.configure(state=tk.NORMAL)
         self.kernel_output.insert(tk.END, data)
         self.kernel_output.configure(state=tk.DISABLED)
@@ -70,11 +69,9 @@ class logic:
             self.__status = self.proc.getStatus()
         else:
             if (self.__clock == self.untill):
-                self.dumpkern(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {
-                    self.proc.splitter.getOpcode()} and functin = {self.proc.splitter.getFunct()}\n")
+                self.dumpkern(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {self.proc.splitter.getOpcode()} and functin = {self.proc.splitter.getFunct()}\n")
             else:
-                self.dumpkern(f"\nProgram Succesfully terminated at clock cycle {
-                    self.__clock}\n")
+                self.dumpkern(f"\nProgram Succesfully terminated at clock cycle {self.__clock}\n")
 
         self.play_button.configure(command=lambda: self.play())
         self.play_one_step_button.configure(command=self.dump_reg_image)
@@ -94,11 +91,9 @@ class logic:
             self.__status = self.proc.getStatus()
         else:
             if (self.__clock == self.untill):
-                self.dumpkern(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {
-                    self.proc.splitter.getOpcode()} and functin = {self.proc.splitter.getFunct()}\n")
+                self.dumpkern(f"\nReached Breakpoint before clock cycle {self.__clock} and instruction opcode = {self.proc.splitter.getOpcode()} and functin = {self.proc.splitter.getFunct()}\n")
             else:
-                self.dumpkern(f"\nProgram Succesfully terminated at clock cycle {
-                    self.__clock}\n")
+                self.dumpkern(f"\nProgram Succesfully terminated at clock cycle {self.__clock}\n")
 
         self.play_button.configure(command=lambda: self.play())
         self.play_one_step_button.configure(command=self.dump_reg_image)
