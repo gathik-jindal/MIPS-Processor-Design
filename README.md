@@ -30,19 +30,19 @@ The MIPS architecture is a RISC (Reduced Instruction Set Computer) architecture 
    cd MIPS-Processor-Design
 
 2. **Run the assembler**:
-  ```bash
-  python assembler/assembler.py assembly_files/sample_program.asm
-  ```
-  This will generate a machine code file in the output/ directory.
+   ```bash
+   python assembler/assembler.py assembly_files/sample_program.asm
+   ```
+   This will generate a machine code file in the output/ directory.
 
 3. **Run the processor simulation**:
-  ```bash
-  python Processor.py output/sample_program.obj
-  ```
-  This will execute the machine code on the simulated processor and display the output.
+   ```bash
+   python Processor.py output/sample_program.obj
+   ```
+   This will execute the machine code on the simulated processor and display the output.
 
 ## Requirements
-  Python 3.x
+   Python 3.x
 
 ## License
-  This project is licensed under the MIT License.
+   This project is licensed under the MIT License.
