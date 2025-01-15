@@ -1,15 +1,16 @@
 # MIPS Processor Design
 
-This project involves simulating a non-pipelined MIPS processor and developing an assembler for it. Additionally, it includes three sample programs that can run on the simulated processor.
+This project involves simulating a non-pipelined MIPS processor and developing an assembler for it along with GUI in tkinter for showing how the execution is done at every step. Additionally, it includes three sample programs that can run on the simulated processor.
 
 ## Overview
 
-The MIPS architecture is a RISC (Reduced Instruction Set Computer) architecture known for its simplicity and efficiency. :contentReference[oaicite:0]{index=0} This project aims to emulate a basic MIPS processor, providing insights into processor design and instruction execution.
+The MIPS architecture is a RISC (Reduced Instruction Set Computer) architecture known for its simplicity and efficiency. This project aims to emulate a basic MIPS processor, providing insights into processor design and instruction execution.
 
 ## Features
 
 - **Processor Simulation**: A Python-based simulation of a non-pipelined MIPS processor, capable of executing a subset of MIPS instructions.
 - **Assembler**: Converts MIPS assembly language code into machine code compatible with the simulated processor.
+- **GUI**: GUI that shows the execution at every step almost replicating a MIPS processor.
 - **Sample Programs**: Includes three assembly programs demonstrating the processor's capabilities.
 
 ## Repository Structure
@@ -18,6 +19,7 @@ The MIPS architecture is a RISC (Reduced Instruction Set Computer) architecture 
 - `Control.py`: Manages control signals for instruction execution.
 - `Memory.py`: Simulates memory components, including instruction and data memory.
 - `Processor.py`: Integrates all components to simulate the MIPS processor.
+- `GUI.py`: Responsible for showing the GUI related elements.
 - `assembler/`: Contains the assembler code and related utilities.
 - `assembly_files/`: Directory with sample assembly programs.
 - `README.md`: Project documentation.
